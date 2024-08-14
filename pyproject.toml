@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "ctktreeview"
+version = "0.1.0"
+description = "A Treeview widget for customtkinter (extension/add-on)"
+authors = ["JohnDevlopment <50782633+JohnDevlopment@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
