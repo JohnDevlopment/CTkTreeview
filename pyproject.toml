@@ -12,6 +12,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.10"
 customtkinter = "^5.2.2"
+attrs = "^24.2.0"
 
 [tool.poetry.group.dev.dependencies]
 icecream = "^2.1.3"
