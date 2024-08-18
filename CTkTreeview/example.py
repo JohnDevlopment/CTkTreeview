@@ -17,8 +17,10 @@ def main():
     app.title("CTkTreeview Example")
     frame = ctk.CTkFrame(app, width=500)
     frame.pack(fill="both", expand=True)
+
     tree = CTkTreeview(frame, ["First", "Last", "Age"], width=400, height=500)
-    tree.insert(values=("John", "Doe", "25"))
+    tree.insert(values=("John", "Smith", 30))
+    tree.insert(values=("Jane", "Doe", 27))
     grid(tree, sticky="snew")
 
     def _toggle_mode_function():
