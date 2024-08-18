@@ -79,6 +79,13 @@ class CTkTreeview(ctk.CTkScrollableFrame):
             tc = self.columns[cname]
             grid(tc.widget, column=i, row=0, sticky="ew", pady=(0, 5))
 
+    def update(self, items=True, columns=True) -> None:
+        """
+        Process pending events and redraw the tree.
+        """
+        self._redraw_tree(items, columns)
+        super().update()
+
     def insert(self, parent=None, index="end", values: Any=None, update=True, **kw):
         if (nvalues := len(values)) < (ncols := len(self.columns)):
             raise ValueError(f"Provided values has a length of {nvalues}, needs {ncols}")
@@ -111,9 +118,12 @@ class CTkTreeview(ctk.CTkScrollableFrame):
             item.add_node(node)
 
         if update:
-            self.update()
+            self.update(columns=False)
 
         return item
+
+    def _redraw_tree(self, items=True, columns=True):
+        pass
 
 if __name__ == '__main__':
     import unittest

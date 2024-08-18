@@ -40,3 +40,6 @@ class CTkTreeview(ctk.CTkScrollableFrame):
         **kw
     ):
         ...
+
+    def update(self, items: bool=True, columns: bool=True) -> None:
+        ...
