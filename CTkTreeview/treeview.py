@@ -1,11 +1,11 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
-
+from typing import TYPE_CHECKING, cast
 
 from icecream import ic
 import customtkinter as ctk
 
 from .tree_item import TreeColumn, TreeItem, TreeNode
+from .types import Color
 from .utils import grid
 
 if TYPE_CHECKING:
@@ -19,9 +19,43 @@ class CTkTreeview(ctk.CTkScrollableFrame):
         self,
         master,
         columns: Iterable[str],
+        button_color="default",
+        highlight_color="default",
+        hover_color="default",
+        text_color="default",
         **kw
     ):
         super().__init__(master, **kw)
+
+        # Button fg color
+        self.button_fg_color = (
+            "transparent" if button_color == "default"
+            else button_color
+        )
+        self.button_fg_color = cast(Color, self.button_fg_color)
+
+        # Button text color
+        self.text_color = (
+            ctk.ThemeManager.theme["CTkLabel"]["text_color"]
+            if text_color == "default"
+            else text_color
+        )
+
+        # Button selection color
+        self.select_color: Color = (
+            ctk.ThemeManager.theme['CTkButton']['fg_color']
+            if highlight_color == "default"
+            else highlight_color
+        )
+        self.select_color = cast(Color, self.select_color)
+
+        # Button selection color: based on 'button_fg_color'
+        self.hover_color: Color = (
+            ctk.ThemeManager.theme['CTkButton']['hover_color']
+            if hover_color == "default"
+            else hover_color
+        )
+        self.hover_color = cast(Color, self.hover_color)
 
         self.end_number = 0
         self.tree = TreeItem()
@@ -65,7 +99,13 @@ class CTkTreeview(ctk.CTkScrollableFrame):
         parent.add_item(item)
         ic(index, row)
         for i, v in enumerate(values):
-            bt = ctk.CTkButton(self, text=str(v))
+            bt = ctk.CTkButton(
+                self,
+                text=str(v),
+                fg_color=self.button_fg_color,
+                hover_color=self.hover_color,
+                text_color=self.text_color
+            )
             grid(bt, row=row+FIRST_ROW, column=i, pady=(0, 5))
             node = TreeNode(v, bt)
             item.add_node(node)
