@@ -107,12 +107,6 @@ class CTkTreeview(ctk.CTkScrollableFrame):
 
         self.event_generate("<<TreeviewSelect>>")
 
-    def update(self, items=True, columns=True) -> None:
-        """
-        Process pending events and redraw the tree.
-        """
-        self._redraw_tree(items, columns)
-        super().update()
 
     def insert(self, parent=None, index="end", values: Any=None, update=True, **kw):
         if (nvalues := len(values)) < (ncols := len(self.columns)):
@@ -146,12 +140,9 @@ class CTkTreeview(ctk.CTkScrollableFrame):
             item.add_node(node)
 
         if update:
-            self.update(columns=False)
+            self.update()
 
-        return item
-
-    def _redraw_tree(self, items=True, columns=True):
-        pass
+        return item.iid
 
 if __name__ == '__main__':
     import unittest
