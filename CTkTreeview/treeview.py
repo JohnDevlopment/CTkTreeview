@@ -21,6 +21,7 @@ class CTkTreeview(ctk.CTkScrollableFrame):
         columns: Iterable[str],
         button_color="default",
         highlight_color="default",
+        hover=True,
         hover_color="default",
         text_color="default",
         **kw
@@ -59,6 +60,7 @@ class CTkTreeview(ctk.CTkScrollableFrame):
 
         self.end_number = 0
         self.tree = TreeItem()
+        self.selected_item: TreeItem | None = None
 
         self.columns: dict[str, TreeColumn] = {}
         self.column_order: list[str] = []
@@ -67,6 +69,8 @@ class CTkTreeview(ctk.CTkScrollableFrame):
             tc = TreeColumn(self, cname)
             self.columns[cname] = tc
             self.column_order.append(cname)
+
+        self.hover = hover
 
         self._update_columns()
 
@@ -78,6 +82,30 @@ class CTkTreeview(ctk.CTkScrollableFrame):
             self.columnconfigure(i, weight=1)
             tc = self.columns[cname]
             grid(tc.widget, column=i, row=0, sticky="ew", pady=(0, 5))
+
+    def select(self, item):
+        # Locate item
+        item = self.tree.find(item)
+        if item is None:
+            return
+
+        # TODO: Reset all buttons to their default bg
+
+        self.selected_item = item
+
+        buttons = [node.button for node in item.nodes]
+
+        for button in buttons:
+            button.configure(fg_color=self.select_color, hover=False)
+
+        # TODO: Add multiple selection
+
+        def _hover():
+            for button in buttons:
+                button.configure(hover=self.hover)
+        self.after(100, _hover)
+
+        self.event_generate("<<TreeviewSelect>>")
 
     def update(self, items=True, columns=True) -> None:
         """

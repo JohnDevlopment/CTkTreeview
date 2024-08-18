@@ -17,6 +17,7 @@ class CTkTreeview(ctk.CTkScrollableFrame):
         fg_color: Color = ...,
         height: int = 200,
         highlight_color: Color=...,
+        hover: bool=True,
         hover_color: Color=...,
         label_anchor: str=...,
         label_fg_color: Color=...,
@@ -39,6 +40,8 @@ class CTkTreeview(ctk.CTkScrollableFrame):
         values: Any=None,
         **kw
     ):
+
+    def select(self, item: str):
         ...
 
     def update(self, items: bool=True, columns: bool=True) -> None:
