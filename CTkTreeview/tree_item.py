@@ -42,7 +42,7 @@ class TreeColumn:
 class TreeItem:
     next_id: ClassVar = 0
     nodes: list[TreeNode] = field(factory=list, init=False)
-    items: list[TreeNode] = field(factory=list, init=False)
+    items: dict[int, TreeItem] = field(factory=dict, init=False)
     parent: Optional[TreeItem] = None
     iid: str = ""
 
@@ -54,6 +54,10 @@ class TreeItem:
     def add_node(self, node: TreeNode):
         self.nodes.append(node)
         node.parent = self
+
+    def add_item(self, item: TreeItem):
+        end = len(self.items)
+        self.items[end] = item
 
     @property
     def is_root(self) -> bool:

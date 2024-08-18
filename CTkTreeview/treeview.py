@@ -51,15 +51,19 @@ class CTkTreeview(ctk.CTkScrollableFrame):
             parent = self.tree
         assert isinstance(parent, TreeItem)
 
+        FIRST_ROW = 1
+
+        if str(index).lower() == "end":
+            index = len(parent.items)
+        assert isinstance(index, int)
+
         item = TreeItem(parent)
-
-        # TODO: Use INDEX to calculate row
-        # row = index if isinstance(index, int) else parent
-        row = len(item.nodes)
-
+        row = index if isinstance(index, int) else len(parent.items)
+        parent.add_item(item)
+        ic(index, row)
         for i, v in enumerate(values):
             bt = ctk.CTkButton(self, text=str(v))
-            grid(bt, row=row+1, column=i, pady=(0, 5))
+            grid(bt, row=row+FIRST_ROW, column=i, pady=(0, 5))
             node = TreeNode(v, bt)
             item.add_node(node)
 
