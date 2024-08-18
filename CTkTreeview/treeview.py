@@ -1,27 +1,30 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 
 from icecream import ic
 import customtkinter as ctk
 
 from .tree_item import TreeColumn, TreeItem, TreeNode
-from .utils import grid, is_iterable
+from .utils import grid
 
 if TYPE_CHECKING:
-    from typing import Any
+    from typing import Any, Iterable
 
 # from tkinter import ttk
 # ttk.Treeview
 
 class CTkTreeview(ctk.CTkScrollableFrame):
-    def __init__(self, master, columns: str, **kw):
+    def __init__(
+        self,
+        master,
+        columns: Iterable[str],
+        **kw
+    ):
         super().__init__(master, **kw)
 
         self.end_number = 0
         self.tree = TreeItem()
-
-        assert is_iterable(columns)
 
         self.columns: dict[str, TreeColumn] = {}
         self.column_order: list[str] = []
