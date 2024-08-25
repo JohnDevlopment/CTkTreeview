@@ -110,7 +110,6 @@ class CTkTreeview(ctk.CTkScrollableFrame):
 
         self.event_generate("<<TreeviewSelect>>")
 
-
     def insert(self, parent=None, index="end", values: Any=None, update=True, **kw):
         if (nvalues := len(values)) < (ncols := len(self.columns)):
             raise ValueError(f"Provided values has a length of {nvalues}, needs {ncols}")
@@ -118,19 +117,33 @@ class CTkTreeview(ctk.CTkScrollableFrame):
         # If no parent is provided, then we default to the root
         if parent is None:
             parent = self.tree
+        else:
+            old_parent = parent
+            parent = self.tree.find(parent)
+            if parent is None:
+                raise ValueError(f"Invalid item {old_parent!r}")
         assert isinstance(parent, TreeItem)
 
         FIRST_ROW = 1
 
+        # INDEX can be "end" or an integer
         if str(index).lower() == "end":
-            index = len(parent.items)
-        assert isinstance(index, int)
+            index = -1
+        elif not isinstance(index, int):
+            raise TypeError(f"Invalid index {index!r}, must be 'end' or an integer")
 
-        item = TreeItem(parent)
-        row = index if isinstance(index, int) else len(parent.items)
+        index = cast(int, index)
+
+        # Create tree item and add to parent
+        item = TreeItem()
         parent.add_item(item)
+        # TODO: If INDEX is >= 0, insert into the item (not append)
+
+        row = len(parent.items) if index < 0 else index
+
         ic(index, row)
         for i, v in enumerate(values):
+            # TODO: When the user clicks one of these buttons, "select" the item
             bt = ctk.CTkButton(
                 self,
                 text=str(v),
