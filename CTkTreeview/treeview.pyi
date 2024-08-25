@@ -35,11 +35,12 @@ class CTkTreeview(ctk.CTkScrollableFrame):
 
     def insert(
         self,
-        parent: TreeNode=...,
+        parent: str=...,
         index: str | int=...,
         values: Any=None,
         **kw
-    ):
+    ) -> str:
+        ...
 
     def select(self, item: str):
         ...
