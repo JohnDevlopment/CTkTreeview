@@ -89,7 +89,10 @@ class CTkTreeview(ctk.CTkScrollableFrame):
         if item is None:
             return
 
-        # TODO: Reset all buttons to their default bg
+        # Reset all buttons to their default bg
+        for subitem in self.tree:
+            for node in subitem.nodes:
+                node.button.configure(fg_color=self.button_fg_color, hover=self.hover)
 
         self.selected_item = item
 
