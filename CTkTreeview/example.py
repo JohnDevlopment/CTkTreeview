@@ -1,7 +1,6 @@
 from __future__ import annotations
 from tkinter import ttk
 
-from attrs import define, field
 from icecream import ic
 import customtkinter as ctk
 
@@ -36,6 +35,9 @@ def main():
     grid(
          ctk.CTkButton(frame, text="Toggle Appearence Mode", command=_toggle_mode_function())
     )
+
+    app.after(1000, lambda: tree.select("Item001"))
+    app.after(2000, lambda: tree.select("Item002"))
 
     app.mainloop()
 
