@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import sys as _sys
 
 if TYPE_CHECKING:
     from typing import Any
@@ -13,3 +14,6 @@ def is_iterable(obj: Any) -> bool:
     except:
         return False
     return True
+
+def error(fmt: str, *args):
+    print(fmt % args, file=_sys.stderr)

@@ -23,3 +23,6 @@ def grid(
 
 def is_iterable(obj: T) -> TypeGuard[Iterable[T]]:
     ...
+
+def error(fmt: str, *args: Any):
+    ...
