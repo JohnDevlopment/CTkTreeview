@@ -15,51 +15,13 @@ def main():
     app = ctk.CTk()
     app.title("CTkTreeview Example")
     frame = ctk.CTkFrame(app, width=500)
-    frame.pack(fill="both", expand=True)
+    frame.pack(fill="both")
 
-    tree = CTkTreeview(frame, ["First", "Last", "Age"], width=400, height=500)
-    tree.insert(values=("John", "Smith", 30))
-    tree.insert(values=("Jane", "Doe", 27))
-    grid(tree, sticky="snew")
-
-    def _toggle_mode_function():
-        mode = "light"
-
-        def toggle_mode():
-            nonlocal mode
-            mode = "dark" if mode == "light" else "light"
-            ctk.set_appearance_mode(mode)
-
-        return toggle_mode
-
-    grid(
-         ctk.CTkButton(frame, text="Toggle Appearence Mode", command=_toggle_mode_function())
-    )
-
-    app.after(1000, lambda: tree.select("Item001"))
-    app.after(2000, lambda: tree.select("Item002"))
+    tree = CTkTreeview(frame, columns=["First", "Last", "Age"])
+    grid(tree, column=0, row=0)
+    app.after(100, lambda: print(app.geometry()))
 
     app.mainloop()
 
-# def main():
-#     app = ctk.CTk()
-#     tree =ttk.Treeview(
-#         app,
-#         columns=["First", "Last", "Age"]
-#     )
-#     tree.column("#0", width=50)
-#     tree.heading("First", text="First")
-#     tree.heading("Last", text="Last")
-#     tree.heading("Age", text="Age")
-#     tree.grid(row=0, column=0)
-
-#     def tree_insert(parent: str, values: list[Any] | tuple[Any, ...]):
-#         return tree.insert(parent, "end", values=values)
-
-#     item = tree_insert("", ("John", "Russell", "30"))
-#     tree_insert(
-#         tree_insert(item, ("Bob", "Joe", "26")),
-#         ("Joe", "Bob", "25")
-#     )
-
-#     app.mainloop()
+if __name__ == '__main__':
+    main()
