@@ -3,7 +3,6 @@ from contextlib import AbstractContextManager
 from tkinter import Grid, Pack, Place, ttk
 from typing import TYPE_CHECKING, cast, overload
 import re
-from typing_extensions import reveal_type
 
 from icecream import ic
 import customtkinter as ctk
@@ -118,25 +117,29 @@ class CTkTreeview(ttk.Treeview):
         self,
         master: Any,
         *,
+        # Treeview options
         columns: str | Iterable[str | int],
-        corner_radius: int | None=None,
         displaycolumns: str | int | Iterable[str] | Iterable[int]=("#all",),
         fg_color: Color | None=None,
         height: int=25,
-        # TODO: Name?
         selectmode: Literal['browse', 'extended', 'none']="extended",
         show: Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]=("tree", "headings"),
+
+        # Frame options
+        bg_color: Color="transparent",
+        border_color: Color | None=None,
+        border_width: int | str | None=None,
+        corner_radius: int | str | None=None,
         width: int=200,
         **kw
     ):
-        self.frame = ctk.CTkFrame(master, width=width+20)
+        # Frame options
+        self.frame = ctk.CTkFrame(master)
 
         # Treeview
         super().__init__(self.frame, height=height,
-                         columns=cast("Any", columns), selectmode=selectmode, **kw)
+                         columns=cast("Any", columns), **kw)
         grid(self, row=0, column=0, sticky="nsew")
-
-        self.selectmode = selectmode
 
         # Scrollbar
         self.scrollbar = ctk.CTkScrollbar(
@@ -146,7 +149,25 @@ class CTkTreeview(ttk.Treeview):
         )
         grid(self.scrollbar, row=0, column=1, sticky='ns')
 
-        self.configure(yscrollcommand=self.scrollbar.set)
+        # Pass init keywords into configure()
+        self.configure(
+            True,
+            # Tree
+            displaycolumns=displaycolumns,
+            fg_color=fg_color,
+            height=height,
+            selectmode=selectmode,
+            show=show,
+            yscrollcommand=self.scrollbar.set,
+
+            # Frame
+            bg_color=bg_color,
+            border_color=border_color,
+            border_width=border_width,
+            corner_radius=corner_radius,
+            width=width,
+            **kw
+        )
 
         # Override the grid, pack, and place methods to point to the parent frame
         treeview_methods = vars(ttk.Treeview)
@@ -160,6 +181,59 @@ class CTkTreeview(ttk.Treeview):
 
     def columns(self):
         return _ColumnContextManager(self)
+
+    def configure(self, require_redraw=False, **kw):
+        # Frame options
+        INT_PROP_PATTERN = re.compile(r'border_width|corner_radius|height|width')
+        frame_options = {}
+
+        for k in ['background_corner_colors', 'bg_color', 'border_color',
+                  'border_width', 'fg_color', 'corner_radius', 'height', 'width']:
+            if k in kw:
+                # These options are not added if they are None
+                if (v := kw.pop(k)) is not None:
+                    frame_options[k] = v
+        for k in ['overwrite_preferred_drawing_method']:
+            if k in kw:
+                v = kw.pop(k)
+                if INT_PROP_PATTERN.match(k) and v is None:
+                    continue
+
+                frame_options[k] = v
+
+        # Our options
+        options = {}
+
+        if 'displaycolumns' in kw:
+            self.displaycolumns = cast(bool, kw.pop('displaycolumns'))
+            options['displaycolumns'] = self.displaycolumns
+
+        if 'fg_color' in kw:
+            self.fg_color = cast(Color, kw.pop('fg_color'))
+            options['fg_color'] = self.fg_color
+
+        if 'height' in kw:
+            self.height = cast(int, kw.pop('height'))
+            options['height'] = self.height
+
+        if 'selectmode' in kw:
+            self.selectmode = cast("Literal['browse', 'extended', 'none']",
+                kw.pop('selectmode'))
+            options['selectmode'] = self.selectmode
+
+        if 'show' in kw:
+            self.show = cast("Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]",
+                kw.pop('show'))
+            options['show'] = self.show
+
+        if 'yscrollcommand' in kw:
+            self.yscrollcommand = cast("Callable[[float, float], None]", kw.pop('yscrollcommand'))
+            options['yscrollcommand'] = self.yscrollcommand
+
+        kw.update(options)
+
+        self.frame.configure(require_redraw, **frame_options)
+        super().configure(**kw)
 
     def headings(self):
         return _HeadingsContextManager(self)
