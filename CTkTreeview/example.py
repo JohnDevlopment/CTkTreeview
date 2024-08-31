@@ -21,6 +21,15 @@ def main():
     grid(tree, column=0, row=0)
     app.after(100, lambda: print(app.geometry()))
 
+    with tree.headings() as th:
+        th.text("First", "First Name")
+        th.text("Last", "Last Name")
+        th.text("Age", "Age")
+
+    with tree.columns() as tc:
+        tc.width("#0", 30)
+        tc.minwidth("#0", 30)
+
     app.mainloop()
 
 if __name__ == '__main__':
