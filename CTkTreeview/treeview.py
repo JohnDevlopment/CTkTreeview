@@ -1,7 +1,8 @@
 from __future__ import annotations
 from contextlib import AbstractContextManager
-from tkinter import Grid, Pack, Place, ttk
+from tkinter import Event, Grid, Pack, Place, ttk
 from typing import TYPE_CHECKING, cast, overload
+import functools
 import re
 
 from icecream import ic
@@ -177,7 +178,7 @@ class CTkTreeview(ttk.Treeview):
             if m[0] != "_" and m != "config" and m != "configure":
                 setattr(self, m, getattr(self.frame, m))
 
-        # TODO: Bind double-click method
+        self.bind("<Double-1>", self.on_double_clicked, True)
 
     def columns(self):
         return _ColumnContextManager(self)
@@ -237,3 +238,68 @@ class CTkTreeview(ttk.Treeview):
 
     def headings(self):
         return _HeadingsContextManager(self)
+
+    ## Hooks
+
+    def on_double_clicked(self, event: Event[Self]):
+        region_clicked = self.identify_region(event.x, event.y)
+        if region_clicked not in ("cell", "tree"):
+            return
+
+        column = self.identify_column(event.x)
+        column_index = int(column[1:]) - 1
+        selected_iid = self.focus()
+        selected_values = self.item(selected_iid)
+
+        if column == "#0":
+            selected_text = selected_values.get('text')
+        else:
+            try:
+                selected_text = selected_values.get('values')[column_index]
+            except IndexError:
+                return
+
+        column_box = self.bbox(selected_iid, column)
+
+        x, y, w, h = cast("tuple[int, int, int, int]", column_box)
+
+        # Editing entry
+        entry = ctk.CTkEntry(self, width=w)
+        entry.insert(0, selected_text)
+
+        user_data = {
+            'column_index': column_index,
+            'item_id': selected_iid,
+            'entry': entry,
+        }
+
+        entry.place(x=x, y=y, w=w, h=h)
+        entry.focus()
+        on_focus_out = functools.partial(self.on_entry_focus_out, **user_data)
+        entry.bind("<Escape>", on_focus_out)
+        entry.bind("<FocusOut>", on_focus_out)
+        entry.bind("<Return>", functools.partial(self.on_entry_enter_pressed, **user_data))
+
+    def on_entry_focus_out(self, _event: Event[ctk.CTkEntry], **kw) -> None:
+        entry: ctk.CTkEntry = kw['entry']
+        assert isinstance(entry, ctk.CTkEntry)
+        entry.destroy()
+
+    def on_entry_enter_pressed(self, _event: Event, **kw) -> None:
+        entry: ctk.CTkEntry = kw['entry']
+        assert isinstance(entry, ctk.CTkEntry)
+
+        new_text = entry.get()
+        edited_column_index: int = kw['column_index']
+        edited_item_id: str = kw['item_id']
+
+        assert edited_column_index >= -1
+
+        if edited_column_index == -1:
+            self.item(edited_item_id, text=new_text)
+        else:
+            current_values = list(self.item(edited_item_id, "values"))
+            current_values[edited_column_index] = new_text
+            self.item(edited_item_id, values=current_values)
+
+        entry.destroy()
