@@ -17,9 +17,11 @@ def main():
     frame = ctk.CTkFrame(app, width=500)
     frame.pack(fill="both")
 
-    tree = CTkTreeview(frame, columns=["First", "Last", "Age"])
+    tree = CTkTreeview(frame, columns=["First", "Last", "Age"], selectmode="browse")
     grid(tree, column=0, row=0)
     app.after(100, lambda: print(app.geometry()))
+
+    # ic(ttk.Style(app).map("Treeview"))
 
     with tree.headings() as th:
         th.text("First", "First Name")
@@ -29,6 +31,10 @@ def main():
     with tree.columns() as tc:
         tc.width("#0", 30)
         tc.minwidth("#0", 30)
+
+    tree.insert("", 'end', values=("John", "Smith", "30"))
+    tree.insert("", 'end', values=("Jane", "Doe", "28"))
+    tree.insert("", 'end', values=("Andrew", "Johnson", "27"))
 
     app.mainloop()
 
