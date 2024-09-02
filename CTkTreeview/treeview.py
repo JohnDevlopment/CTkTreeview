@@ -16,8 +16,8 @@ if TYPE_CHECKING:
     from typing_extensions import Self
     from .types import Anchor, Color, ImageSpec
 
-class _HeadingsContextManager(AbstractContextManager):
-    def __init__(self, obj: CTkTreeview) -> None:
+class Headings(AbstractContextManager):
+    def __init__(self, obj: CTkTreeview):
         self.obj = obj
 
     def __enter__(self) -> Self:
@@ -41,8 +41,8 @@ class _HeadingsContextManager(AbstractContextManager):
     def text(self, column: str | int, text: str) -> None:
         self.obj.heading(column, text=text)
 
-class _ColumnContextManager(AbstractContextManager):
-    def __init__(self, obj: CTkTreeview) -> None:
+class Columns(AbstractContextManager):
+    def __init__(self, obj: CTkTreeview):
         self.obj = obj
 
     def __enter__(self) -> Self:
@@ -181,7 +181,7 @@ class CTkTreeview(ttk.Treeview):
         self.bind("<Double-1>", self.on_double_clicked, True)
 
     def columns(self):
-        return _ColumnContextManager(self)
+        return Columns(self)
 
     def configure(self, require_redraw=False, **kw):
         # Frame options
@@ -237,7 +237,7 @@ class CTkTreeview(ttk.Treeview):
         super().configure(**kw)
 
     def headings(self):
-        return _HeadingsContextManager(self)
+        return Headings(self)
 
     ## Hooks
 
