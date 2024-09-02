@@ -18,7 +18,7 @@ def grid(
     sticky: str=...,
     in_: Any=...,
     **kw: Any
-):
+) -> None:
     ...
 
 def is_iterable(obj: T) -> TypeGuard[Iterable[T]]:
