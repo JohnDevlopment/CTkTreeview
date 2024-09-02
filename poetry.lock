@@ -496,6 +496,23 @@ lint = ["flake8 (>=6.0)", "mypy (==1.11.0)", "pytest (>=6.0)", "ruff (==0.5.5)",
 test = ["cython (>=3.0)", "defusedxml (>=0.7.1)", "pytest (>=8.0)", "setuptools (>=70.0)", "typing_extensions (>=4.9)"]
 
 [[package]]
+name = "sphinx-rtd-theme"
+version = "0.5.1"
+description = "Read the Docs theme for Sphinx"
+optional = false
+python-versions = "*"
+files = [
+    {file = "sphinx_rtd_theme-0.5.1-py2.py3-none-any.whl", hash = "sha256:fa6bebd5ab9a73da8e102509a86f3fcc36dec04a0b52ea80e5a033b2aba00113"},
+    {file = "sphinx_rtd_theme-0.5.1.tar.gz", hash = "sha256:eda689eda0c7301a80cf122dad28b1861e5605cbf455558f3775e1e8200e83a5"},
+]
+
+[package.dependencies]
+sphinx = "*"
+
+[package.extras]
+dev = ["bump2version", "sphinxcontrib-httpdomain", "transifex-client"]
+
+[[package]]
 name = "sphinxcontrib-applehelp"
 version = "2.0.0"
 description = "sphinxcontrib-applehelp is a Sphinx extension which outputs Apple help books"
@@ -631,4 +648,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "7182ceaa6175b21f71239d7d2641431e0985acf48b33ee3fa0449b054ddff3b2"
+content-hash = "b705a270b4e5bf80094fa532ee58361d41aa5aeb7ac69687cec8f6d5587b0e31"
