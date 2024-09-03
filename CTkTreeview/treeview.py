@@ -17,6 +17,10 @@ if TYPE_CHECKING:
     from .types import Anchor, Color, ImageSpec
 
 class Headings(AbstractContextManager):
+    """
+    A context manager that sets options for the headings.
+    """
+
     def __init__(self, obj: CTkTreeview):
         self.obj = obj
 
@@ -28,7 +32,17 @@ class Headings(AbstractContextManager):
 
     def anchor(self, column: str | int, anchor: Anchor) -> None:
         """
-        Set the anchor argument of column.
+        Set the anchor of a heading.
+
+        :param column: The name or index of a column
+        :type column: str or int
+
+        :param str anchor: One of 'nw', 'n' 'ne', 'e', 'se', 's',
+                           'sw', 'w'
+
+        :returns: ``None`` if `anchor` is set, otherwise the current
+                  anchor of `column`'s heading
+        :rtype: str or None
         """
         self.obj.heading(column, anchor=anchor)
 
@@ -41,6 +55,20 @@ class Headings(AbstractContextManager):
         ...
 
     def command(self, column: str | int, command: str | Callable[[], None] | None=None):
+        """
+        Query or set the command of a heading.
+
+        :param column: The name or index of the column
+        :type column: str or int
+
+        :param command: The command to be called when the heading is
+                        clicked on
+        :type command: Callable or None
+
+        :returns: ``None`` if `command` is provided, otherwise the
+                  currently set command
+        :rtype: None or str or Callable
+        """
         if command is not None:
             self.obj.heading(column, command=command)
         else:
@@ -55,7 +83,19 @@ class Headings(AbstractContextManager):
         ...
 
     def image(self, column: str | int, image: ImageSpec | None=None):
+        """
+        Query or set a heading's image.
 
+        :param column: String name or index of a column
+        :type column: str or int
+
+        :param ImageSpec image: A string name of an image or a
+                                ``tkinter.Image``
+
+        :returns: ``None`` if `image` is provided, otherwise the
+                  currently set image
+        :rtype: tuple[str] or str or None
+        """
         if image is not None:
             self.obj.heading(column, image=image)
         else:
@@ -70,6 +110,18 @@ class Headings(AbstractContextManager):
         ...
 
     def text(self, column: str | int, text: str | None=None):
+        """
+        Query or set the textual label of a heading.
+
+        :param column: String name or index of a column
+        :type column: str or int
+
+        :param str text: Textual label of the heading
+
+        :returns: ``None`` if `text` is provided, otherwise the
+                  current textual label
+        :rtype: str or None
+        """
         if text is not None:
             self.obj.heading(column, text=text)
         else:
