@@ -1,0 +1,14 @@
+clear
+if cd build; then
+    if [ -z "$VIRTUAL_ENV_PROMPT" ]; then
+	source ~/github/CTkTreeview/.venv/bin/activate
+    fi
+
+    PORT=5012
+    alias reset_prompt='PS1="$OLD_PS1"'
+    OLD_PS1="$PS1"
+    PS1="($VIRTUAL_ENV_PROMPT) "'\[\e]0;Documentation Server (localhost:$PORT)\a\]\W\[\033[00m\]\$ '
+
+    python -m http.server $PORT
+    exit
+fi
