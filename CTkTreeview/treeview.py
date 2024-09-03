@@ -32,14 +32,48 @@ class Headings(AbstractContextManager):
         """
         self.obj.heading(column, anchor=anchor)
 
-    def command(self, column: str | int, command: Callable[[], None]) -> None:
-        self.obj.heading(column, command=command)
+    @overload
+    def command(self, column: str | int, command: str | Callable[[], None]) -> None:
+        ...
 
+    @overload
+    def command(self, column: str | int) -> str | Callable[[], None]:
+        ...
+
+    def command(self, column: str | int, command: str | Callable[[], None] | None=None):
+        if command is not None:
+            self.obj.heading(column, command=command)
+        else:
+            return self.obj.heading(column, 'heading')
+
+    @overload
     def image(self, column: str | int, image: ImageSpec) -> None:
-        self.obj.heading(column, image=image)
+        ...
 
+    @overload
+    def image(self, column: str | int) -> tuple[str] | str:
+        ...
+
+    def image(self, column: str | int, image: ImageSpec | None=None):
+
+        if image is not None:
+            self.obj.heading(column, image=image)
+        else:
+            return self.obj.heading(column, 'image')
+
+    @overload
     def text(self, column: str | int, text: str) -> None:
-        self.obj.heading(column, text=text)
+        ...
+
+    @overload
+    def text(self, column: str | int) -> str:
+        ...
+
+    def text(self, column: str | int, text: str | None=None):
+        if text is not None:
+            self.obj.heading(column, text=text)
+        else:
+            return self.obj.heading(column, 'text')
 
 class Columns(AbstractContextManager):
     def __init__(self, obj: CTkTreeview):
