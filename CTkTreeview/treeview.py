@@ -273,7 +273,6 @@ class CTkTreeview(ttk.Treeview):
         # Treeview options
         columns: str | Iterable[str | int],
         displaycolumns: str | int | Iterable[str] | Iterable[int]=("#all",),
-        fg_color: Color | None=None,
         height: int=25,
         selectmode: Literal['browse', 'extended', 'none']="extended",
         show: Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]=("tree", "headings"),
@@ -283,9 +282,76 @@ class CTkTreeview(ttk.Treeview):
         border_color: Color | None=None,
         border_width: int | str | None=None,
         corner_radius: int | str | None=None,
+        fg_color: Color | None=None,
         width: int=200,
         **kw
     ):
+        """
+        Initialize a treeview object with a given master.
+
+        :param Any master: The master of this widget
+
+        :keyword columns: A list of data columns. May be a single
+                          string to define a single column or a
+                          list of strings for multiple columns. The
+                          list may also contain integers
+        :type columns: str or Iterable[str or int]
+
+        :keyword displaycolumns: The list of columns to display,
+                                 and in what order. The columns are
+                                 referenced by their symbolic names
+                                 (as in `columns`), or their
+                                 numerical index into the list
+                                 passed in `columns`. If ``"#all"``
+                                 or ``("#all",)`` (the default), all
+                                 columns are displayed in the order
+                                 that they are defined
+        :type displaycolumns: str or Iterable[str or int]
+
+        :keyword int height: The widget height in rows
+
+        :keyword str selectmode: Controls how the selection is
+                                 handled. Valid modes are
+                                 ``browse``, ``extended``, and
+                                 ``none``
+
+        :keyword str show: Controls what elements of the tree to
+                           display. Values can be ``'tree'``,
+                           ``'headings'``, ``tree headings'``, an
+                           empty string, or a tuple consisting of
+                           any combination of ``'tree'`` and
+                           ``'headings'``
+
+        :keyword Color bg_color: Sets the background color of this
+                                 widget. But what it really sets is
+                                 the background color of the
+                                 containing frame. The special value
+                                 ``"transparent"`` (the default)
+                                 makes the frame transparent
+
+        :keyword border_color: Sets the border color. In reality,
+                               this is an option for the containing
+                               frame. If omitted or ``None``, the
+                               border is not displayed
+        :type border_color: Color or None
+
+        :keyword int border_width: Sets the border width. In
+                                   reality, this is an option for
+                                   the containing frame
+
+        :keyword corder_radius: Currently unused
+        :type corder_radius: int or str or None
+
+        :keyword Color fg_color: Sets the forground color. In
+                                 reality, this is an option for the
+                                 containing frame
+
+        :keyword int width: Sets the width. In reality, this is an
+                            option for the containing frame
+
+        Any remaining keyword options are forwarded to
+        :py:meth:`tkinter.ttk.Treeview.__init__`.
+        """
         # Frame options
         self.frame = ctk.CTkFrame(master)
 
