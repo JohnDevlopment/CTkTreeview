@@ -128,6 +128,10 @@ class Headings(AbstractContextManager):
             return self.obj.heading(column, 'text')
 
 class Columns(AbstractContextManager):
+    """
+    A context manager that sets options for the headings.
+    """
+
     def __init__(self, obj: CTkTreeview):
         self.obj = obj
 
@@ -146,6 +150,19 @@ class Columns(AbstractContextManager):
         ...
 
     def anchor(self, column: int | str, anchor=None):
+        """
+        Query or set the anchor of a column.
+
+        :param column: String name or index of a column
+        :type column: str or int
+
+        :param str anchor: One of 'nw', 'n' 'ne', 'e', 'se', 's',
+                           'sw', or 'w'
+
+        :returns: ``None`` if `anchor` is provided, otherwise one of
+                  'nw', 'n' 'ne', 'e', 'se', 's', 'sw', or 'w'
+        :rtype: str or None
+        """
         if anchor is not None:
             self.obj.column(column, anchor=anchor)
             return
@@ -153,6 +170,15 @@ class Columns(AbstractContextManager):
         return cast("Anchor", self.obj.column(column, 'anchor'))
 
     def id(self, column: int | str) -> str:
+        """
+        Query the ID of a column.
+
+        :param column: String name or index of a column
+        :type column: str or int
+
+        :returns: The ID of `column`
+        :rtype: str
+        """
         return self.obj.column(column, 'id')
 
     @overload
@@ -164,6 +190,18 @@ class Columns(AbstractContextManager):
         ...
 
     def minwidth(self, column: int | str, minwidth=None):
+        """
+        Query or set the minimum width of a column.
+
+        :param column: String name or index of a column
+        :type column: str or int
+
+        :param int width: The minimum width that `column` should be
+
+        :returns: ``None`` if `column` is provided, otherwise the
+                  currently set minimum width of the column
+        :rtype: int or None
+        """
         if minwidth is not None:
             self.obj.column(column, minwidth=minwidth)
             return
@@ -179,6 +217,18 @@ class Columns(AbstractContextManager):
         ...
 
     def width(self, column: int | str, width=None):
+        """
+        Query or set the width of a column.
+
+        :param column: String name or index of a column
+        :type column: str or int
+
+        :param int width: The width of `column`
+
+        :returns: ``None`` if `column` is provided, otherwise the
+                  currently set width of the column
+        :rtype: int or None
+        """
         if width is not None:
             self.obj.column(column, width=width)
             return
@@ -194,9 +244,25 @@ class Columns(AbstractContextManager):
         ...
 
     def stretch(self, column: int | str, stretch=None):
+        """
+        Query or set the stretch flag of a column.
+
+        :param column: String name or index of a column
+        :type column: str or int
+
+        :param bool stretch: Whether or not the column should
+                             stretch when the widget resizes or when
+                             the user drags a column separator
+
+        :returns: ``None`` if `stretch` is provided, otherwise
+                  ``True`` or ``False`` depending on the current
+                  stretch of `column`
+        :rtype: bool or None
+        """
         if stretch is not None:
             self.obj.column(column, stretch=stretch)
             return
+
         return self.obj.column(column, 'stretch')
 
 class CTkTreeview(ttk.Treeview):
