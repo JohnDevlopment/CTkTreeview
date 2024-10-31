@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING, cast, overload
 import functools
 import re
 
-from icecream import ic
 import customtkinter as ctk
 
 from .utils import grid
@@ -352,13 +351,16 @@ class CTkTreeview(ttk.Treeview):
         Any remaining keyword options are forwarded to
         :py:meth:`tkinter.ttk.Treeview.__init__`.
         """
-        # Frame options
         self.frame = ctk.CTkFrame(master)
 
         # Treeview
-        super().__init__(self.frame, height=height,
-                         columns=cast("Any", columns), **kw)
-        grid(self, row=0, column=0, sticky="nsew")
+        super().__init__(
+            self.frame,
+            height=height,
+            columns=cast("Any", columns),
+            **kw
+        )
+        grid(self, row=0, column=0)
 
         # Scrollbar
         self.scrollbar = ctk.CTkScrollbar(
