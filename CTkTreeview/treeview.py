@@ -7,7 +7,7 @@ import re
 
 import customtkinter as ctk
 
-from .utils import grid
+from .utils import check_kwargs_empty, grid, pop_kwargs
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
@@ -351,6 +351,21 @@ class CTkTreeview(ttk.Treeview):
         Any remaining keyword options are forwarded to
         :py:meth:`tkinter.ttk.Treeview.__init__`.
         """
+        # Attributes:tree
+        self._columns = columns
+        self._displaycolumns = displaycolumns
+        self._height = height
+        self._selectmode = selectmode
+        self._show = show
+
+        # Attributes:frame
+        self._bg_color = bg_color
+        self._border_color = border_color
+        self._border_width = border_width
+        self._corner_radius = corner_radius
+        self._fg_color = fg_color
+        self._width = width
+
         self.frame = ctk.CTkFrame(master)
 
         # Treeview
@@ -360,7 +375,8 @@ class CTkTreeview(ttk.Treeview):
             columns=cast("Any", columns),
             **kw
         )
-        grid(self, row=0, column=0)
+        # grid(self, row=0, column=0, sticky='ewns')
+        self.pack(fill='both', expand=True, side="left")
 
         # Scrollbar
         self.scrollbar = ctk.CTkScrollbar(
@@ -368,7 +384,8 @@ class CTkTreeview(ttk.Treeview):
             orientation="vertical",
             command=self.yview
         )
-        grid(self.scrollbar, row=0, column=1, sticky='ns')
+        # grid(self.scrollbar, row=0, column=1, sticky='ns')
+        self.scrollbar.pack(fill='y', expand=True, side="right")
 
         # Pass init keywords into configure()
         self.configure(
@@ -376,7 +393,7 @@ class CTkTreeview(ttk.Treeview):
             # Tree
             displaycolumns=displaycolumns,
             fg_color=fg_color,
-            height=height,
+            # height=height,
             selectmode=selectmode,
             show=show,
             yscrollcommand=self.scrollbar.set,
@@ -405,22 +422,24 @@ class CTkTreeview(ttk.Treeview):
 
     def configure(self, require_redraw=False, **kw):
         # Frame options
-        INT_PROP_PATTERN = re.compile(r'border_width|corner_radius|height|width')
-        frame_options = {}
+        # INT_PROP_PATTERN = re.compile(r'border_width|corner_radius|height|width')
+        frame_options = pop_kwargs(kw, self._valid_frame_options)
 
-        for k in ['background_corner_colors', 'bg_color', 'border_color',
-                  'border_width', 'fg_color', 'corner_radius', 'height', 'width']:
-            if k in kw:
-                # These options are not added if they are None
-                if (v := kw.pop(k)) is not None:
-                    frame_options[k] = v
-        for k in ['overwrite_preferred_drawing_method']:
-            if k in kw:
-                v = kw.pop(k)
-                if INT_PROP_PATTERN.match(k) and v is None:
-                    continue
+        # for k in ['background_corner_colors', 'bg_color', 'border_color',
+        #           'border_width', 'fg_color', 'corner_radius', 'height', 'width']:
+        #     # Specific options are for the frame rather than the treeview
+        #     if k in kw:
+        #         # These options are not added if they are None
+        #         if (v := kw.pop(k)) is not None:
+        #             frame_options[k] = v
 
-                frame_options[k] = v
+        # for k in ['overwrite_preferred_drawing_method']:
+        #     if k in kw:
+        #         v = kw.pop(k)
+        #         if INT_PROP_PATTERN.match(k) and v is None:
+        #             continue
+
+        #         frame_options[k] = v
 
         # Our options
         options = {}
@@ -430,26 +449,26 @@ class CTkTreeview(ttk.Treeview):
             options['displaycolumns'] = self.displaycolumns
 
         if 'fg_color' in kw:
-            self.fg_color = cast(Color, kw.pop('fg_color'))
-            options['fg_color'] = self.fg_color
+            self._fg_color = cast(Color, kw.pop('fg_color'))
+            options['fg_color'] = self._fg_color
 
         if 'height' in kw:
-            self.height = cast(int, kw.pop('height'))
-            options['height'] = self.height
+            self._height = cast("int", kw.pop('height'))
+            options['height'] = self._height
 
         if 'selectmode' in kw:
-            self.selectmode = cast("Literal['browse', 'extended', 'none']",
+            self._selectmode = cast("Literal['browse', 'extended', 'none']",
                 kw.pop('selectmode'))
-            options['selectmode'] = self.selectmode
+            options['selectmode'] = self._selectmode
 
         if 'show' in kw:
-            self.show = cast("Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]",
+            self._show = cast("Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]",
                 kw.pop('show'))
-            options['show'] = self.show
+            options['show'] = self._show
 
         if 'yscrollcommand' in kw:
-            self.yscrollcommand = cast("Callable[[float, float], None]", kw.pop('yscrollcommand'))
-            options['yscrollcommand'] = self.yscrollcommand
+            self._yscrollcommand = cast("Callable[[float, float], None]", kw.pop('yscrollcommand'))
+            options['yscrollcommand'] = self._yscrollcommand
 
         kw.update(options)
 

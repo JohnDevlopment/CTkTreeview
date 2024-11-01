@@ -26,3 +26,9 @@ def is_iterable(obj: T) -> TypeGuard[Iterable[T]]:
 
 def error(fmt: str, *args: Any):
     ...
+
+def pop_kwargs(dct: dict[str, Any], valid_keys: set[str]) -> dict[str, Any]:
+    ...
+
+def check_kwargs_empty(dct: dict[str, Any], raise_error: bool=...) -> bool:
+    ...
