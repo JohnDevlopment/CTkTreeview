@@ -45,13 +45,6 @@ class Headings(AbstractContextManager):
         """
         self.obj.heading(column, anchor=anchor)
 
-    @overload
-    def command(self, column: str | int, command: str | Callable[[], None]) -> None:
-        ...
-
-    @overload
-    def command(self, column: str | int) -> str | Callable[[], None]:
-        ...
 
     def command(self, column: str | int, command: str | Callable[[], None] | None=None):
         """
@@ -73,13 +66,6 @@ class Headings(AbstractContextManager):
         else:
             return self.obj.heading(column, 'heading')
 
-    @overload
-    def image(self, column: str | int, image: ImageSpec) -> None:
-        ...
-
-    @overload
-    def image(self, column: str | int) -> tuple[str] | str:
-        ...
 
     def image(self, column: str | int, image: ImageSpec | None=None):
         """
@@ -100,13 +86,6 @@ class Headings(AbstractContextManager):
         else:
             return self.obj.heading(column, 'image')
 
-    @overload
-    def text(self, column: str | int, text: str) -> None:
-        ...
-
-    @overload
-    def text(self, column: str | int) -> str:
-        ...
 
     def text(self, column: str | int, text: str | None=None):
         """
@@ -140,15 +119,7 @@ class Columns(AbstractContextManager):
     def __exit__(self, exc_type, exc_value, traceback) -> None:
         pass
 
-    @overload
-    def anchor(self, column: int | str, anchor: Anchor) -> None:
-        ...
-
-    @overload
-    def anchor(self, column: int | str) -> Anchor:
-        ...
-
-    def anchor(self, column: int | str, anchor=None):
+    def anchor(self, column: int | str, anchor: Anchor | None=None):
         """
         Query or set the anchor of a column.
 
@@ -180,15 +151,9 @@ class Columns(AbstractContextManager):
         """
         return self.obj.column(column, 'id')
 
-    @overload
-    def minwidth(self, column: int | str) -> int:
-        ...
+        return self.obj.tree.column(column, 'id')
 
-    @overload
-    def minwidth(self, column: int | str, minwidth: int) -> None:
-        ...
-
-    def minwidth(self, column: int | str, minwidth=None):
+    def minwidth(self, column: int | str, minwidth: int | None=None):
         """
         Query or set the minimum width of a column.
 
@@ -207,15 +172,9 @@ class Columns(AbstractContextManager):
 
         return self.obj.column(column, 'minwidth')
 
-    @overload
-    def width(self, column: int | str) -> int:
-        ...
+        return self.obj.tree.column(column, 'minwidth')
 
-    @overload
-    def width(self, column: int | str, width: int) -> None:
-        ...
-
-    def width(self, column: int | str, width=None):
+    def width(self, column: int | str, width: int | None=None):
         """
         Query or set the width of a column.
 
@@ -234,15 +193,9 @@ class Columns(AbstractContextManager):
 
         return self.obj.column(column, 'width')
 
-    @overload
-    def stretch(self, column: int | str, stretch: bool) -> None:
-        ...
+        return self.obj.tree.column(column, 'width')
 
-    @overload
-    def stretch(self, column: int | str) -> bool:
-        ...
-
-    def stretch(self, column: int | str, stretch=None):
+    def stretch(self, column: int | str, stretch: bool | None=None):
         """
         Query or set the stretch flag of a column.
 
