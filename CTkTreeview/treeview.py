@@ -1,9 +1,11 @@
+"""
+CTkTreeview widget and its helper classes.
+"""
 from __future__ import annotations
 from contextlib import AbstractContextManager
-from tkinter import Event, Grid, Pack, Place, ttk
-from typing import TYPE_CHECKING, cast, overload
+from tkinter import Event, ttk
+from typing import TYPE_CHECKING, cast
 import functools
-import re
 
 import customtkinter as ctk
 
@@ -43,8 +45,7 @@ class Headings(AbstractContextManager):
                   anchor of `column`'s heading
         :rtype: str or None
         """
-        self.obj.heading(column, anchor=anchor)
-
+        self.obj.tree.heading(column, anchor=anchor)
 
     def command(self, column: str | int, command: str | Callable[[], None] | None=None):
         """
@@ -62,10 +63,9 @@ class Headings(AbstractContextManager):
         :rtype: None or str or Callable
         """
         if command is not None:
-            self.obj.heading(column, command=command)
+            self.obj.tree.heading(column, command=command)
         else:
-            return self.obj.heading(column, 'heading')
-
+            return self.obj.tree.heading(column, 'heading')
 
     def image(self, column: str | int, image: ImageSpec | None=None):
         """
@@ -82,10 +82,9 @@ class Headings(AbstractContextManager):
         :rtype: tuple[str] or str or None
         """
         if image is not None:
-            self.obj.heading(column, image=image)
+            self.obj.tree.heading(column, image=image)
         else:
-            return self.obj.heading(column, 'image')
-
+            return self.obj.tree.heading(column, 'image')
 
     def text(self, column: str | int, text: str | None=None):
         """
@@ -101,9 +100,9 @@ class Headings(AbstractContextManager):
         :rtype: str or None
         """
         if text is not None:
-            self.obj.heading(column, text=text)
+            self.obj.tree.heading(column, text=text)
         else:
-            return self.obj.heading(column, 'text')
+            return self.obj.tree.heading(column, 'text')
 
 class Columns(AbstractContextManager):
     """
@@ -134,10 +133,10 @@ class Columns(AbstractContextManager):
         :rtype: str or None
         """
         if anchor is not None:
-            self.obj.column(column, anchor=anchor)
+            self.obj.tree.column(column, anchor=anchor)
             return
 
-        return cast("Anchor", self.obj.column(column, 'anchor'))
+        return cast("Anchor", self.obj.tree.column(column, 'anchor'))
 
     def id(self, column: int | str) -> str:
         """
@@ -149,8 +148,6 @@ class Columns(AbstractContextManager):
         :returns: The ID of `column`
         :rtype: str
         """
-        return self.obj.column(column, 'id')
-
         return self.obj.tree.column(column, 'id')
 
     def minwidth(self, column: int | str, minwidth: int | None=None):
@@ -167,10 +164,8 @@ class Columns(AbstractContextManager):
         :rtype: int or None
         """
         if minwidth is not None:
-            self.obj.column(column, minwidth=minwidth)
+            self.obj.tree.column(column, minwidth=minwidth)
             return
-
-        return self.obj.column(column, 'minwidth')
 
         return self.obj.tree.column(column, 'minwidth')
 
@@ -188,10 +183,8 @@ class Columns(AbstractContextManager):
         :rtype: int or None
         """
         if width is not None:
-            self.obj.column(column, width=width)
+            self.obj.tree.column(column, width=width)
             return
-
-        return self.obj.column(column, 'width')
 
         return self.obj.tree.column(column, 'width')
 
@@ -212,12 +205,22 @@ class Columns(AbstractContextManager):
         :rtype: bool or None
         """
         if stretch is not None:
-            self.obj.column(column, stretch=stretch)
+            self.obj.tree.column(column, stretch=stretch)
             return
 
-        return self.obj.column(column, 'stretch')
+        return self.obj.tree.column(column, 'stretch')
 
-class CTkTreeview(ttk.Treeview):
+class CTkTreeview(ctk.CTkFrame):
+    """
+    A customized treeview widget.
+
+    For the time being, no customizations are done on this
+    widget---such changes will be done at a later update.
+    """
+
+    _valid_frame_options = {'background_corner_colors', 'bg_color', 'border_color',
+        'border_width', 'fg_color', 'corner_radius', 'height', 'width'}
+
     def __init__(
         self,
         master: Any,
@@ -319,54 +322,61 @@ class CTkTreeview(ttk.Treeview):
         self._fg_color = fg_color
         self._width = width
 
-        self.frame = ctk.CTkFrame(master)
-
-        # Treeview
         super().__init__(
-            self.frame,
-            height=height,
-            columns=cast("Any", columns),
-            **kw
-        )
-        # grid(self, row=0, column=0, sticky='ewns')
-        self.pack(fill='both', expand=True, side="left")
-
-        # Scrollbar
-        self.scrollbar = ctk.CTkScrollbar(
-            self.frame,
-            orientation="vertical",
-            command=self.yview
-        )
-        # grid(self.scrollbar, row=0, column=1, sticky='ns')
-        self.scrollbar.pack(fill='y', expand=True, side="right")
-
-        # Pass init keywords into configure()
-        self.configure(
-            True,
-            # Tree
-            displaycolumns=displaycolumns,
-            fg_color=fg_color,
-            # height=height,
-            selectmode=selectmode,
-            show=show,
-            yscrollcommand=self.scrollbar.set,
-
-            # Frame
+            master,
             bg_color=bg_color,
             border_color=border_color,
             border_width=border_width,
             corner_radius=corner_radius,
-            width=width,
+            fg_color=fg_color,
+            width=width
+        )
+
+        self.tree = ttk.Treeview(
+            self,
+            columns=cast("Any", columns),
+            displaycolumns=cast("Any", displaycolumns),
+            height=height,
+            selectmode=cast("Any", selectmode),
+            show=cast("Any", show),
             **kw
         )
 
+        # Scrollbar
+        self.scrollbar = ctk.CTkScrollbar(
+            self,
+            orientation="vertical",
+            command=self.yview
+        )
+        self.scrollbar.pack(fill='y', expand=True, side="right")
+
+        # Pass init keywords into configure()
+        # self.configure(
+        #     True,
+        #     # Tree
+        #     displaycolumns=displaycolumns,
+        #     fg_color=fg_color,
+        #     # height=height,
+        #     selectmode=selectmode,
+        #     show=show,
+        #     yscrollcommand=self.scrollbar.set,
+
+        #     # Frame
+        #     bg_color=bg_color,
+        #     border_color=border_color,
+        #     border_width=border_width,
+        #     corner_radius=corner_radius,
+        #     width=width,
+        #     **kw
+        # )
+
         # Override the grid, pack, and place methods to point to the parent frame
-        treeview_methods = vars(ttk.Treeview)
-        pack_methods = vars(Grid).keys() | vars(Pack).keys() | vars(Place).keys()
-        pack_methods = pack_methods.difference(treeview_methods)
-        for m in pack_methods:
-            if m[0] != "_" and m != "config" and m != "configure":
-                setattr(self, m, getattr(self.frame, m))
+        # treeview_methods = vars(ttk.Treeview)
+        # pack_methods = vars(Grid).keys() | vars(Pack).keys() | vars(Place).keys()
+        # pack_methods = pack_methods.difference(treeview_methods)
+        # for m in pack_methods:
+        #     if m[0] != "_" and m != "config" and m != "configure":
+        #         setattr(self, m, getattr(self.frame, m))
 
         self.bind("<Double-1>", self.on_double_clicked, True)
 
@@ -374,27 +384,7 @@ class CTkTreeview(ttk.Treeview):
         return Columns(self)
 
     def configure(self, require_redraw=False, **kw):
-        # Frame options
-        # INT_PROP_PATTERN = re.compile(r'border_width|corner_radius|height|width')
         frame_options = pop_kwargs(kw, self._valid_frame_options)
-
-        # for k in ['background_corner_colors', 'bg_color', 'border_color',
-        #           'border_width', 'fg_color', 'corner_radius', 'height', 'width']:
-        #     # Specific options are for the frame rather than the treeview
-        #     if k in kw:
-        #         # These options are not added if they are None
-        #         if (v := kw.pop(k)) is not None:
-        #             frame_options[k] = v
-
-        # for k in ['overwrite_preferred_drawing_method']:
-        #     if k in kw:
-        #         v = kw.pop(k)
-        #         if INT_PROP_PATTERN.match(k) and v is None:
-        #             continue
-
-        #         frame_options[k] = v
-
-        # Our options
         options = {}
 
         if 'displaycolumns' in kw:
@@ -425,15 +415,338 @@ class CTkTreeview(ttk.Treeview):
 
         kw.update(options)
 
-        self.frame.configure(require_redraw, **frame_options)
-        super().configure(**kw)
+        super().configure(require_redraw, **frame_options)
 
     def headings(self):
         return Headings(self)
 
+    ## Treeview wrapper functions
+
+    def bbox(self, item: str | int, column: str | int | None=None):
+        """
+        Get the bounding box of the specified item.
+
+        :param item: The string ID or index of an item
+        :type item: str or int
+
+        :param column: A column ID or index (optional)
+        :type column: str or int or None
+
+        :returns: A bounding box (relative to the widget's window)
+                  in the form x y width height; If `column` is
+                  specified, the bounding box of that cell; an empty
+                  string if `item` is not visible (i.e., it is a
+                  descendant of a closed item or is scrolled
+                  offscreen)
+        """
+        return self.tree.bbox(item, column)
+
+    def delete(self, *items: str | int):
+        """
+        Delete the specified items.
+
+        Each item's descendants are also deleted.
+
+        :param items: The items to delete
+        :type items: tuple[str or int, ...]
+
+        .. note::
+           The parent item cannot be deleted.
+        """
+        return self.tree.delete(*items)
+
+    def detach(self, *items):
+        # TODO: Write docstring
+        return self.tree.detach(*items)
+
+    def exists(self, item):
+        # TODO: Write docstring
+        return self.tree.exists(item)
+
+    def get_children(self, item=None):
+        # TODO: Write docstring
+        return self.tree.get_children(item)
+
+    def focus(self, item=None):
+        # TODO: Write docstring
+        return self.tree.focus(item)
+
+    def identify(self, component, x: int, y: int):
+        # Internal method.
+        return self.tree.identify(component, x, y)
+
+    def identify_column(self, x: int):
+        """
+        Identify the region at the given x coordinate.
+
+        :param int x: The X coordinate of column
+
+        :returns: The column identifier of the cell at position `x`
+        :rtype: str
+        """
+        return self.tree.identify_column(x)
+
+    def identify_element(self, x: int, y: int):
+        # TODO: Write docstring
+        return self.tree.identify_element(x, y)
+
+    def identify_region(self, x: int, y: int):
+        """
+        Identify the region.
+
+        The region will be one of:
+        * cell: data cell
+        * heading: tree heading area
+        * separator: space between two columns headings;
+        * tree: the tree area
+
+        :param int x: X coordinate
+        :param int y: Y coordinate
+
+        :returns: One of ``cell``, ``heading``, ``separator``,
+                  ``tree``
+        :rtype: str
+        """
+        return self.tree.identify_region(x, y)
+
+    def identify_row(self, y: int):
+        # TODO: Write docstring
+        return self.tree.identify_row(y)
+
+    def index(self, item):
+        # TODO: Write docstring
+        return self.tree.index(item)
+
+    def insert(self, parent, index: int | Literal['end'], iid=None, **kw):
+        # TODO: Write docstring
+        return self.tree.insert(parent, index, iid, **kw)
+
+    def item(self, item, option=None, **kw):
+        # TODO: Write docstring
+        return self.tree.item(item, option, **kw)
+
+    def move(self, item, parent, index):
+        # TODO: Write docstring
+        return self.tree.move(item, parent, index)
+
+    def next(self, item):
+        # TODO: Write docstring
+        return self.tree.next(item)
+
+    def parent(self, item):
+        # TODO: Write docstring
+        return self.tree.parent(item)
+
+    def prev(self, item):
+        # TODO: Write docstring
+        return self.tree.prev(item)
+
+    reattach = next
+
+    def see(self, item):
+        """
+        Ensure that the specified item is visible.
+
+        :param item: An item
+        :type item: str or int
+        """
+        return self.tree.see(item)
+
+    def selection(self):
+        """
+        Return a tuple of selected items.
+
+        :returns: A tuple of selected items
+        :rtype: tuple[str, ...]
+        """
+        return self.tree.selection()
+
+    def selection_add(self, *items):
+        """
+        Add the specified items to the selection.
+
+        :param *items: A list of items
+        :type *items: str or int
+        """
+        return self.tree.selection_add(*items)
+
+    def selection_remove(self, *items):
+        """
+        Remove the specified items from the selection.
+
+        :param *items: A list of items
+        :type *items: str or int
+        """
+        return self.tree.selection_remove(*items)
+
+    def selection_set(self, *items):
+        """
+        Set the specified items as the new selection.
+
+        :param *items: A list of items
+        :type *items: str or int
+        """
+        return self.tree.selection_set(*items)
+
+    def selection_toggle(self, *items):
+        """
+        Toggle the selection state of of each specified item.
+
+        :param *items: A list of items
+        :type *items: str or int
+        """
+        return self.tree.selection_toggle(*items)
+
+    def set(self, item, column=None, value=None):
+        # TODO: Write docstring
+        return self.tree.set(item, column, value)
+
+    def set_children(self, item, *newchildren):
+        # TODO: Write docstring
+        return self.tree.set_children(item, *newchildren)
+
+    def tag_bind(self, tagname: str, sequence=None, callback=None):
+        # TODO: Write docstring
+        # TODO: Function that calls CALLBACK with Event using CTkTreeview instead of ttk.Treeview
+        return self.tree.tag_bind(tagname, sequence, callback)
+
+    def tag_configure(self, tagname, option=None, **kw):
+        """
+        Query or modify the options for a tag.
+
+        :param str tagname: A tag
+
+        :param option: If specified, the name of an option to query
+        :type option: str or None
+
+        :keyword str foreground: Text foreground color
+
+        :keyword str background: Text background color
+
+        :keyword font: Text font
+        :type font: FontDescription
+
+        :keyword image: Specifies the item image
+        :type image: ImageSpec
+
+        :returns: If `option` and keywords are not provided, a
+                  dictionary of the option settings for
+                  `tagname`. If `option` is specified, the result is
+                  the value for that option. Otherwise, the result
+                  is ``None`` and the specified options are set for
+                  `tagname`
+        :rtype: FontDescription
+        """
+        return self.tree.tag_configure(tagname, option, **kw)
+
+    def tag_has(self, tagname, item=None):
+        """
+        Query whether an item or all items have a specific tag.
+
+        :param str tagname: A tag
+
+        :param item: Check the whether this item has `tag`
+        :type item: str or int
+
+        :returns: True if `item` has `tag`, if `item` is
+                  specified. Otherwise, a tuple of items which have
+                  the tag
+        :rtype: bool | tuple[str, ...]
+        """
+        return self.tree.tag_has(tagname, item)
+
+    def xview(self, *args):
+        """
+        Query or modify the x-view of the window.
+
+        :param index: If provided, adjusts the x-view such that this
+                      is displayed at the top edge of the window
+        :type index: int or None
+
+        :returns: If ``index`` is omitted, a tuple of floats each in
+                  the range [0,1]. Together, they describe the
+                  vertical span that is visible in the window. For
+                  example, the value ``(0.2, 0.4)`` describes that
+                  20% of the window is cut off from the top, 40% of
+                  the content is visible, and 40% is cut off from
+                  the bottom
+        :rtype: tuple[float, float] or None
+        """
+        return self.tree.xview(*args)
+
+    def xview_moveto(self, fraction: float):
+        """
+        Adjust the x-view of the window to a certain position.
+
+        The result of this function is that the x-view is moved such
+        that `fraction` of the total height of the canvas is
+        off-screen to the top.
+
+        :param float fraction: A fraction of the total height of the
+                               canvas
+        """
+        return self.tree.xview_moveto(fraction)
+
+    def xview_scroll(self, number: int, what):
+        """
+        Shift the x-view of the window.
+
+        :param int number: The number of `what` units to scroll
+
+        :param str what: The unit to measure `number` in. Can be
+                         either "units" or "pages"
+        """
+        return self.tree.xview_scroll(number, what)
+
+    def yview(self, *args):
+        """
+        Query or modify the y-view of the window.
+
+        :param index: If provided, adjusts the y-view such that this
+                      is displayed at the top edge of the window
+        :type index: int or None
+
+        :returns: If ``index`` is omitted, a tuple of floats each in
+                  the range [0,1]. Together, they describe the
+                  vertical span that is visible in the window. For
+                  example, the value ``(0.2, 0.4)`` describes that
+                  20% of the window is cut off from the top, 40% of
+                  the content is visible, and 40% is cut off from
+                  the bottom
+        :rtype: tuple[float, float] or None
+        """
+        self.tree.yview(*args)
+
+    def yview_moveto(self, fraction):
+        """
+        Adjust the y-view of the window to a certain position.
+
+        The result of this function is that the y-view is moved such
+        that `fraction` of the total height of the canvas is
+        off-screen to the top.
+
+        :param float fraction: A fraction of the total height of the
+                               canvas
+        """
+        self.tree.yview_moveto(fraction)
+
+    def yview_scroll(self, number, what):
+        """
+        Shift the y-view of the window.
+
+        :param int number: The number of `what` units to scroll
+
+        :param str what: The unit to measure `number` in. Can be
+                         either "units" or "pages"
+        """
+        return self.tree.yview_scroll(number, what)
+
     ## Hooks
 
-    def on_double_clicked(self, event: Event[Self]):
+    def on_double_clicked(self, event: Event[Self]) -> None:
+        """
+        Callback for when an item is double-clicked.
+        """
         region_clicked = self.identify_region(event.x, event.y)
         if region_clicked not in ("cell", "tree"):
             return
@@ -445,6 +758,7 @@ class CTkTreeview(ttk.Treeview):
 
         if column == "#0":
             selected_text = selected_values.get('text')
+            assert isinstance(selected_text, str)
         else:
             try:
                 selected_text = selected_values.get('values')[column_index]

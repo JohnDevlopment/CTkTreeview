@@ -1,13 +1,21 @@
+from _typeshed import MaybeNone
 from collections.abc import Callable, Iterable
 from contextlib import AbstractContextManager
-from tkinter import _ImageSpec, Event
+from tkinter import Event
 from tkinter.ttk import _TreeviewItemDict
-from typing import Any, Literal, overload
+from typing import Any, Literal, TypedDict, overload
 
 from typing_extensions import Self
 import customtkinter as ctk
 
-from .types import Anchor, Color, ImageSpec
+from .types import Anchor, Color, FontDescription, ImageSpec, ScreenUnits
+
+class _TreeviewTagDict(TypedDict):
+    # There is also 'text' and 'anchor', but they don't seem to do anything, using them is likely a bug
+    foreground: str
+    background: str
+    font: FontDescription
+    image: str  # not wrapped in list :D
 
 class Headings(AbstractContextManager):
     def __init__(self, obj: CTkTreeview) -> None:
@@ -139,40 +147,255 @@ class CTkTreeview(ctk.CTkFrame):
     ) -> tuple[int, int, int, int] | Literal['']:
         ...
 
+    def delete(self, *items: str | int) -> None:
+        ...
+
+    def detach(self, *items: str | int) -> None:
+        ...
+
+    def exists(self, item: str | int) -> bool:
+        ...
+
+    @overload
+    def focus(self, item: None=None) -> str:
+        ...
+
+    @overload
+    def focus(self, item: str | int) -> Literal[""]:
+        ...
+
+    def get_children(self, item: str | int | None=None) -> tuple[str, ...]:
+        ...
+
+    def identify(self, component, x, y):
+        ...
+
+    def identify_element(self, x: int, y: int) -> str:
+        ...
+
     def identify_column(self, x: int) -> str:
         ...
 
     def identify_region(self, x: int, y: int) -> Literal['cell', 'heading', 'nothing', 'separator', 'tree']:
         ...
 
+    def identify_row(self, y: int) -> str:
+        ...
+
+    def index(self, item: str | int) -> int:
+        ...
+
+    def insert(
+        self,
+        parent: str,
+        index: int | Literal["end"],
+        iid: str | int=...,
+        *,
+        id: str | int=...,
+        text: str=...,
+        image: ImageSpec=...,
+        values: list[Any] | tuple[Any, ...]=...,
+        open: bool=...,
+        tags: str | list[str] | tuple[str, ...]=...,
+    ) -> str:
+        ...
+
     @overload
-    def item(self, item: str | int, option: Literal["text"]) -> str: ...
+    def item(self, item: str | int, option: Literal["text"]) -> str:
+        ...
+
     @overload
-    def item(self, item: str | int, option: Literal["image"]) -> tuple[str] | Literal[""]: ...
+    def item(self, item: str | int, option: Literal["image"]) -> tuple[str] | Literal[""]:
+        ...
+
     @overload
-    def item(self, item: str | int, option: Literal["values"]) -> tuple[Any, ...] | Literal[""]: ...
+    def item(self, item: str | int, option: Literal["values"]) -> tuple[Any, ...] | Literal[""]:
+        ...
+
     @overload
-    def item(self, item: str | int, option: Literal["open"]) -> bool: ...  # actually 0 or 1
+    def item(self, item: str | int, option: Literal["open"]) -> bool:
+        ...
+
     @overload
-    def item(self, item: str | int, option: Literal["tags"]) -> tuple[str, ...] | Literal[""]: ...
+    def item(self, item: str | int, option: Literal["tags"]) -> tuple[str, ...] | Literal[""]:
+        ...
+
     @overload
-    def item(self, item: str | int, option: str) -> Any: ...
+    def item(self, item: str | int, option: str) -> Any:
+        ...
+
     @overload
-    def item(self, item: str | int, option: None = None) -> _TreeviewItemDict: ...
+    def item(self, item: str | int) -> _TreeviewItemDict:
+        ...
+
     @overload
     def item(
         self,
         item: str | int,
-        option: None = None,
+        option: None=None,
         *,
-        text: str = ...,
-        image: _ImageSpec = ...,
-        values: list[Any] | tuple[Any, ...] | Literal[""] = ...,
-        open: bool = ...,
-        tags: str | list[str] | tuple[str, ...] = ...,
-    ) -> None: ...
+        text: str=...,
+        image: ImageSpec=...,
+        values: list[Any] | tuple[Any, ...] | Literal[""]=...,
+        open: bool=...,
+        tags: str | list[str] | tuple[str, ...]=...,
+    ) -> None:
+        ...
 
-    def item(self, item, option=..., **kw) -> None:
+    def move(self, item: str | int, parent: str, index: int) -> None:
+        ...
+
+    def next(self, item: str | int) -> str:
+        ...
+
+    def parent(self, item: str | int) -> str:
+        ...
+
+    def prev(self, item: str | int) -> str:
+        ...
+
+    reattach = next
+
+    def see(self, item: str | int) -> str:
+        ...
+
+    def selection(self) -> tuple[str, ...]:
+        ...
+
+    @overload
+    def selection_add(self, items: list[str] | tuple[str, ...] | list[int] | tuple[int, ...], /) -> None:
+        ...
+
+    @overload
+    def selection_add(self, *items: str | int) -> None:
+        ...
+
+    @overload
+    def selection_remove(self, items: list[str] | tuple[str, ...] | list[int] | tuple[int, ...], /) -> None:
+        ...
+
+    @overload
+    def selection_remove(self, *items: str | int) -> None:
+        ...
+
+    @overload
+    def selection_set(self, items: list[str] | tuple[str, ...] | list[int] | tuple[int, ...], /) -> None:
+        ...
+
+    @overload
+    def selection_set(self, *items: str | int) -> None:
+        ...
+
+    @overload
+    def selection_toggle(self, items: list[str] | tuple[str, ...] | list[int] | tuple[int, ...], /) -> None:
+        ...
+
+    @overload
+    def selection_toggle(self, *items: str | int) -> None:
+        ...
+
+    @overload
+    def set(self, item: str | int, column: None=None, value: None=None) -> dict[str, Any]:
+        ...
+
+    @overload
+    def set(self, item: str | int, column: str | int, value: None=None) -> Any:
+        ...
+
+    @overload
+    def set(self, item: str | int, column: str | int, value: Any) -> Literal[""]:
+        ...
+
+    def set_children(self, item: str | int, *newchildren: str | int) -> None:
+        ...
+
+    @overload
+    def tag_bind(
+        self,
+        tagname: str,
+        sequence: str | None=None,
+        callback: Callable[[Event[CTkTreeview]], object] | None=None
+    ) -> str:
+        ...
+
+    @overload
+    def tag_bind(self, tagname: str, sequence: str | None, callback: str) -> None:
+        ...
+
+    @overload
+    def tag_bind(self, tagname: str, *, callback: str) -> None:
+        ...
+
+    @overload
+    def tag_configure(self, tagname: str, option: Literal["foreground", "background"]) -> str:
+        ...
+
+    @overload
+    def tag_configure(self, tagname: str, option: Literal["font"]) -> FontDescription:
+        ...
+
+    @overload
+    def tag_configure(self, tagname: str, option: Literal["image"]) -> str:
+        ...
+
+    @overload
+    def tag_configure(
+        self,
+        tagname: str,
+        option: None=None,
+        *,
+        # There is also 'text' and 'anchor', but they don't seem to do anything, using them is likely a bug
+        foreground: str=...,
+        background: str=...,
+        font: FontDescription=...,
+        image: ImageSpec=...,
+    ) -> _TreeviewTagDict | MaybeNone:
+        ...  # can be None but annoying to check
+
+    @overload
+    def tag_has(self, tagname: str, item: None=None) -> tuple[str, ...]:
+        ...
+
+    @overload
+    def tag_has(self, tagname: str, item: str | int) -> bool:
+        ...
+
+    @overload
+    def xview(self) -> tuple[float, float]:
+        ...
+
+    @overload
+    def xview(self, index: int) -> None:
+        ...
+
+    def xview_moveto(self, fraction: float) -> None:
+        ...
+
+    @overload
+    def xview_scroll(self, number: int, what: Literal["units", "pages"]) -> None:
+        ...
+
+    @overload
+    def xview_scroll(self, number: ScreenUnits, what: Literal["pixels"]) -> None:
+        ...
+
+    @overload
+    def yview(self) -> tuple[float, float]:
+        ...
+
+    @overload
+    def yview(self, index: int) -> None:
+        ...
+
+    def yview_moveto(self, fraction: float) -> None:
+        ...
+
+    @overload
+    def yview_scroll(self, number: int, what: Literal["units", "pages"]) -> None:
+        ...
+
+    @overload
+    def yview_scroll(self, number: ScreenUnits, what: Literal["pixels"]) -> None:
         ...
 
     ## Hooks
