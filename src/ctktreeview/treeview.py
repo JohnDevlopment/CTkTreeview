@@ -327,19 +327,19 @@ class CTkTreeview(ctk.CTkFrame):
         :py:meth:`tkinter.ttk.Treeview.__init__`.
         """
         # Attributes:tree
-        self._columns = columns
-        self._displaycolumns = displaycolumns
-        self._height = height
-        self._selectmode = selectmode
-        self._show = show
+        self.__columns = columns
+        self.__displaycolumns = displaycolumns
+        self.__height = height
+        self.__selectmode = selectmode
+        self.__show = show
 
         # Attributes:frame
-        self._bg_color = bg_color
-        self._border_color = border_color
-        self._border_width = border_width
-        self._corner_radius = corner_radius
-        self._fg_color = fg_color
-        self._width = width
+        self.__bg_color = bg_color
+        self.__border_color = border_color
+        self.__border_width = border_width
+        self.__corner_radius = corner_radius
+        self.__fg_color = fg_color
+        self.__width = width
 
         super().__init__(
             master,
@@ -409,25 +409,25 @@ class CTkTreeview(ctk.CTkFrame):
             options["displaycolumns"] = self.displaycolumns
 
         if "fg_color" in kw:
-            self._fg_color = cast(Color, kw.pop("fg_color"))
-            options["fg_color"] = self._fg_color
+            self.__fg_color = cast(Color, kw.pop("fg_color"))
+            options["fg_color"] = self.__fg_color
 
         if "height" in kw:
-            self._height = cast("int", kw.pop("height"))
-            options["height"] = self._height
+            self.__height = cast("int", kw.pop("height"))
+            options["height"] = self.__height
 
         if "selectmode" in kw:
-            self._selectmode = cast(
+            self.__selectmode = cast(
                 "Literal['browse', 'extended', 'none']", kw.pop("selectmode")
             )
-            options["selectmode"] = self._selectmode
+            options["selectmode"] = self.__selectmode
 
         if "show" in kw:
-            self._show = cast(
+            self.__show = cast(
                 "Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]",
                 kw.pop("show"),
             )
-            options["show"] = self._show
+            options["show"] = self.__show
 
         if "yscrollcommand" in kw:
             self._yscrollcommand = cast(
