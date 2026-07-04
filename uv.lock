@@ -1,11 +1,6 @@
 version = 1
 revision = 3
 requires-python = ">=3.10, <4"
-resolution-markers = [
-    "python_full_version >= '3.12'",
-    "python_full_version == '3.11.*'",
-    "python_full_version < '3.11'",
-]
 
 [[package]]
 name = "asttokens"
@@ -78,7 +73,6 @@ dev = [
     { name = "rassumfrassum", specifier = ">=0.3.4" },
     { name = "ruff", specifier = ">=0.15.20" },
 ]
-doc = []
 
 [[package]]
 name = "customtkinter"
