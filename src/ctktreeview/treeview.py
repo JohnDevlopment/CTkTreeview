@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
     from typing_extensions import Self
 
-    from .types import Anchor, Color, ImageSpec
+    from .typings import Anchor, Color, ImageSpec
 
 
 class Headings(AbstractContextManager):

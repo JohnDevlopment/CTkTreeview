@@ -8,7 +8,7 @@ from typing import Any, Literal, TypedDict, overload
 from typing_extensions import Self
 import customtkinter as ctk
 
-from .types import Anchor, Color, FontDescription, ImageSpec, ScreenUnits
+from .typings import Anchor, Color, FontDescription, ImageSpec, ScreenUnits
 
 class _TreeviewTagDict(TypedDict):
     # There is also 'text' and 'anchor', but they don't seem to do anything, using them is likely a bug
