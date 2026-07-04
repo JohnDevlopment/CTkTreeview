@@ -1,0 +1,107 @@
+# -*- mode: sh; -*-
+
+if [ -z "$VIRTUAL_ENV_PROMPT" ]; then
+    source .venv/bin/activate
+fi
+
+alias reset_prompt='PS1="$OLD_PS1"'
+OLD_PS1="$PS1"PS1="($VIRTUAL_ENV_PROMPT) "'\[\e]0;'"CTkTreeview"'\a\]\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\W\[\033[00m\]\$ '
+if [ -n "$TMUX" ]; then
+    tmux renamew "CTkTreeview"
+fi
+
+clear
+
+alias emacs="execnohup emacs; unalias emacs; history -s execnohup emacs"
+alias rmcache='find -type d -iname __pycache__ -execdir rm -rfv \{} \; 2> /dev/null'
+
+source ~/src/.fzf-history
+source ~/src/.gitprojectrc --python
+source ~/src/.fzf-ruff-check CTkTreeview CTkTreeview
+
+function rfix {
+    ruff check --fix "$@"
+    history -s ruff check --fix $(printf "%q " "$@")
+}
+
+function rchk {
+    ruff check "$@"
+    history -s ruff check $(printf "%q " "$@")
+}
+
+function rfmt {
+    ruff format "$@"
+    history -s ruff format $(printf "%q " "$@")
+}
+
+function pytest {
+    local package cmd OPT C P hist pytest uvcmd
+
+    while getopts :cp: OPT; do
+        case $OPT in
+            c)
+                C=1
+                ;;
+            p)
+                P="$OPTARG"
+                ;;
+            *)
+                echo "pytest [-c] [-p PACKAGE] ARG..."
+                return 2
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+    OPTIND=1
+
+    if [ -n "$P" ]; then
+        uvcmd=(uv run --package "$P" --)
+    else
+        uvcmd=()
+    fi
+
+    cmd=("${uvcmd[@]}" nice pytest "$@")
+
+    if (( C == 1 )); then
+        cmd+=(--cov '&&' "${uvcmd[@]}" coverage html)
+    fi
+
+    local arg newcmd
+    newcmd=()
+    for arg in "${cmd[@]}"; do
+        case "$arg" in
+            *\&*)
+                newcmd+=("$arg")
+                ;;
+            *)
+                newcmd+=($(printf %q "$arg"))
+        esac
+    done
+    cmd=("${newcmd[@]}")
+
+    eval "${cmd[*]}"
+    history -s ${cmd[@]}
+}
+
+alias cov="xdg-open htmlcov/index.html; unalias cov; history -s xdg-open htmlcov/index.html"
+alias pytest-coverage="pytest --cov && coverage html; unalias pytest-coverage; history -s pytest --cov \&\& coverage html"
+
+history -c
+HISTFILE="$VIRTUAL_ENV/.bash_history"
+HISTSIZE=500
+HISTFILESIZE=500
+export HISTFILE HISTSIZE HISTFILESIZE
+history -r
+
+cat <<EOF
+Commands:
+  * cov (once, modifies history)
+  * create-stub
+  * emacs (once, modifies history)
+  * pytest (modifies history)
+  * pytest-coverage (once, modifies history)
+  * rchk (modifies history)
+  * reset_prompt
+  * rfix (modifies history)
+  * rfmt (modifies history)
+  * rmcache
+EOF
