@@ -1,4 +1,5 @@
 from __future__ import annotations
+from datetime import datetime
 from tkinter import ttk
 
 from icecream import ic
@@ -17,24 +18,13 @@ def main():
     frame = ctk.CTkFrame(app, width=500)
     frame.pack(fill="both")
 
-    tree = CTkTreeview(frame, columns=["First", "Last", "Age"], selectmode="browse")
+    tree = CTkTreeview(frame, columns=["File", "Date"])
     grid(tree, column=0, row=0)
     app.after(100, lambda: print(app.geometry()))
 
-    # ic(ttk.Style(app).map("Treeview"))
-
     with tree.headings() as th:
-        th.text("First", "First Name")
-        th.text("Last", "Last Name")
-        th.text("Age", "Age")
-
-    with tree.columns() as tc:
-        tc.width("#0", 30)
-        tc.minwidth("#0", 30)
-
-    tree.insert("", 'end', values=("John", "Smith", "30"))
-    tree.insert("", 'end', values=("Jane", "Doe", "28"))
-    tree.insert("", 'end', values=("Andrew", "Johnson", "27"))
+        th.text("File", "File")
+        th.text("Date", "Date Added")
 
     app.mainloop()
 
