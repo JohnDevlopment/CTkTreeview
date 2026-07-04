@@ -1,21 +1,26 @@
 """
 CTkTreeview widget and its helper classes.
 """
+
 from __future__ import annotations
+
+import functools
 from contextlib import AbstractContextManager
 from tkinter import Event, ttk
 from typing import TYPE_CHECKING, cast
-import functools
 
 import customtkinter as ctk
 
-from .utils import check_kwargs_empty, grid, pop_kwargs
+from .utils import pop_kwargs
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
     from typing import Any, Literal
+
     from typing_extensions import Self
+
     from .types import Anchor, Color, ImageSpec
+
 
 class Headings(AbstractContextManager):
     """
@@ -47,7 +52,9 @@ class Headings(AbstractContextManager):
         """
         self.obj.tree.heading(column, anchor=anchor)
 
-    def command(self, column: str | int, command: str | Callable[[], None] | None=None):
+    def command(
+        self, column: str | int, command: str | Callable[[], None] | None = None
+    ):
         """
         Query or set the command of a heading.
 
@@ -65,9 +72,9 @@ class Headings(AbstractContextManager):
         if command is not None:
             self.obj.tree.heading(column, command=command)
         else:
-            return self.obj.tree.heading(column, 'heading')
+            return self.obj.tree.heading(column, "heading")
 
-    def image(self, column: str | int, image: ImageSpec | None=None):
+    def image(self, column: str | int, image: ImageSpec | None = None):
         """
         Query or set a heading's image.
 
@@ -84,9 +91,9 @@ class Headings(AbstractContextManager):
         if image is not None:
             self.obj.tree.heading(column, image=image)
         else:
-            return self.obj.tree.heading(column, 'image')
+            return self.obj.tree.heading(column, "image")
 
-    def text(self, column: str | int, text: str | None=None):
+    def text(self, column: str | int, text: str | None = None):
         """
         Query or set the textual label of a heading.
 
@@ -102,7 +109,8 @@ class Headings(AbstractContextManager):
         if text is not None:
             self.obj.tree.heading(column, text=text)
         else:
-            return self.obj.tree.heading(column, 'text')
+            return self.obj.tree.heading(column, "text")
+
 
 class Columns(AbstractContextManager):
     """
@@ -118,7 +126,7 @@ class Columns(AbstractContextManager):
     def __exit__(self, exc_type, exc_value, traceback) -> None:
         pass
 
-    def anchor(self, column: int | str, anchor: Anchor | None=None):
+    def anchor(self, column: int | str, anchor: Anchor | None = None):
         """
         Query or set the anchor of a column.
 
@@ -136,7 +144,7 @@ class Columns(AbstractContextManager):
             self.obj.tree.column(column, anchor=anchor)
             return
 
-        return cast("Anchor", self.obj.tree.column(column, 'anchor'))
+        return cast("Anchor", self.obj.tree.column(column, "anchor"))
 
     def id(self, column: int | str) -> str:
         """
@@ -148,9 +156,9 @@ class Columns(AbstractContextManager):
         :returns: The ID of `column`
         :rtype: str
         """
-        return self.obj.tree.column(column, 'id')
+        return self.obj.tree.column(column, "id")
 
-    def minwidth(self, column: int | str, minwidth: int | None=None):
+    def minwidth(self, column: int | str, minwidth: int | None = None):
         """
         Query or set the minimum width of a column.
 
@@ -167,9 +175,9 @@ class Columns(AbstractContextManager):
             self.obj.tree.column(column, minwidth=minwidth)
             return
 
-        return self.obj.tree.column(column, 'minwidth')
+        return self.obj.tree.column(column, "minwidth")
 
-    def width(self, column: int | str, width: int | None=None):
+    def width(self, column: int | str, width: int | None = None):
         """
         Query or set the width of a column.
 
@@ -186,9 +194,9 @@ class Columns(AbstractContextManager):
             self.obj.tree.column(column, width=width)
             return
 
-        return self.obj.tree.column(column, 'width')
+        return self.obj.tree.column(column, "width")
 
-    def stretch(self, column: int | str, stretch: bool | None=None):
+    def stretch(self, column: int | str, stretch: bool | None = None):
         """
         Query or set the stretch flag of a column.
 
@@ -208,7 +216,8 @@ class Columns(AbstractContextManager):
             self.obj.tree.column(column, stretch=stretch)
             return
 
-        return self.obj.tree.column(column, 'stretch')
+        return self.obj.tree.column(column, "stretch")
+
 
 class CTkTreeview(ctk.CTkFrame):
     """
@@ -218,8 +227,16 @@ class CTkTreeview(ctk.CTkFrame):
     widget---such changes will be done at a later update.
     """
 
-    _valid_frame_options = {'background_corner_colors', 'bg_color', 'border_color',
-        'border_width', 'fg_color', 'corner_radius', 'height', 'width'}
+    _valid_frame_options = {
+        "background_corner_colors",
+        "bg_color",
+        "border_color",
+        "border_width",
+        "fg_color",
+        "corner_radius",
+        "height",
+        "width",
+    }
 
     def __init__(
         self,
@@ -227,19 +244,21 @@ class CTkTreeview(ctk.CTkFrame):
         *,
         # Treeview options
         columns: str | Iterable[str | int],
-        displaycolumns: str | int | Iterable[str] | Iterable[int]=("#all",),
-        height: int=25,
-        selectmode: Literal['browse', 'extended', 'none']="extended",
-        show: Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]=("tree", "headings"),
-
+        displaycolumns: str | int | Iterable[str] | Iterable[int] = ("#all",),
+        height: int = 25,
+        selectmode: Literal["browse", "extended", "none"] = "extended",
+        show: Literal["tree", "headings", "tree headings", ""] | Iterable[str] = (
+            "tree",
+            "headings",
+        ),
         # Frame options
-        bg_color: Color="transparent",
-        border_color: Color | None=None,
-        border_width: int | str | None=None,
-        corner_radius: int | str | None=None,
-        fg_color: Color | None=None,
-        width: int=200,
-        **kw
+        bg_color: Color = "transparent",
+        border_color: Color | None = None,
+        border_width: int | str | None = None,
+        corner_radius: int | str | None = None,
+        fg_color: Color | None = None,
+        width: int = 200,
+        **kw,
     ):
         """
         Initialize a treeview object with a given master.
@@ -329,7 +348,7 @@ class CTkTreeview(ctk.CTkFrame):
             border_width=border_width,
             corner_radius=corner_radius,
             fg_color=fg_color,
-            width=width
+            width=width,
         )
 
         self.tree = ttk.Treeview(
@@ -339,16 +358,14 @@ class CTkTreeview(ctk.CTkFrame):
             height=height,
             selectmode=cast("Any", selectmode),
             show=cast("Any", show),
-            **kw
+            **kw,
         )
 
         # Scrollbar
         self.scrollbar = ctk.CTkScrollbar(
-            self,
-            orientation="vertical",
-            command=self.yview
+            self, orientation="vertical", command=self.yview
         )
-        self.scrollbar.pack(fill='y', expand=True, side="right")
+        self.scrollbar.pack(fill="y", expand=True, side="right")
 
         # Pass init keywords into configure()
         # self.configure(
@@ -387,31 +404,36 @@ class CTkTreeview(ctk.CTkFrame):
         frame_options = pop_kwargs(kw, self._valid_frame_options)
         options = {}
 
-        if 'displaycolumns' in kw:
-            self.displaycolumns = cast(bool, kw.pop('displaycolumns'))
-            options['displaycolumns'] = self.displaycolumns
+        if "displaycolumns" in kw:
+            self.displaycolumns = cast(bool, kw.pop("displaycolumns"))
+            options["displaycolumns"] = self.displaycolumns
 
-        if 'fg_color' in kw:
-            self._fg_color = cast(Color, kw.pop('fg_color'))
-            options['fg_color'] = self._fg_color
+        if "fg_color" in kw:
+            self._fg_color = cast(Color, kw.pop("fg_color"))
+            options["fg_color"] = self._fg_color
 
-        if 'height' in kw:
-            self._height = cast("int", kw.pop('height'))
-            options['height'] = self._height
+        if "height" in kw:
+            self._height = cast("int", kw.pop("height"))
+            options["height"] = self._height
 
-        if 'selectmode' in kw:
-            self._selectmode = cast("Literal['browse', 'extended', 'none']",
-                kw.pop('selectmode'))
-            options['selectmode'] = self._selectmode
+        if "selectmode" in kw:
+            self._selectmode = cast(
+                "Literal['browse', 'extended', 'none']", kw.pop("selectmode")
+            )
+            options["selectmode"] = self._selectmode
 
-        if 'show' in kw:
-            self._show = cast("Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]",
-                kw.pop('show'))
-            options['show'] = self._show
+        if "show" in kw:
+            self._show = cast(
+                "Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]",
+                kw.pop("show"),
+            )
+            options["show"] = self._show
 
-        if 'yscrollcommand' in kw:
-            self._yscrollcommand = cast("Callable[[float, float], None]", kw.pop('yscrollcommand'))
-            options['yscrollcommand'] = self._yscrollcommand
+        if "yscrollcommand" in kw:
+            self._yscrollcommand = cast(
+                "Callable[[float, float], None]", kw.pop("yscrollcommand")
+            )
+            options["yscrollcommand"] = self._yscrollcommand
 
         kw.update(options)
 
@@ -422,7 +444,7 @@ class CTkTreeview(ctk.CTkFrame):
 
     ## Treeview wrapper functions
 
-    def bbox(self, item: str | int, column: str | int | None=None):
+    def bbox(self, item: str | int, column: str | int | None = None):
         """
         Get the bounding box of the specified item.
 
@@ -517,7 +539,7 @@ class CTkTreeview(ctk.CTkFrame):
         # TODO: Write docstring
         return self.tree.index(item)
 
-    def insert(self, parent, index: int | Literal['end'], iid=None, **kw):
+    def insert(self, parent, index: int | Literal["end"], iid=None, **kw):
         # TODO: Write docstring
         return self.tree.insert(parent, index, iid, **kw)
 
@@ -757,11 +779,11 @@ class CTkTreeview(ctk.CTkFrame):
         selected_values = self.item(selected_iid)
 
         if column == "#0":
-            selected_text = selected_values.get('text')
+            selected_text = selected_values.get("text")
             assert isinstance(selected_text, str)
         else:
             try:
-                selected_text = selected_values.get('values')[column_index]
+                selected_text = selected_values.get("values")[column_index]
             except IndexError:
                 return
 
@@ -774,9 +796,9 @@ class CTkTreeview(ctk.CTkFrame):
         entry.insert(0, selected_text)
 
         user_data = {
-            'column_index': column_index,
-            'item_id': selected_iid,
-            'entry': entry,
+            "column_index": column_index,
+            "item_id": selected_iid,
+            "entry": entry,
         }
 
         entry.place(x=x, y=y, w=w, h=h)
@@ -784,20 +806,22 @@ class CTkTreeview(ctk.CTkFrame):
         on_focus_out = functools.partial(self.on_entry_focus_out, **user_data)
         entry.bind("<Escape>", on_focus_out)
         entry.bind("<FocusOut>", on_focus_out)
-        entry.bind("<Return>", functools.partial(self.on_entry_enter_pressed, **user_data))
+        entry.bind(
+            "<Return>", functools.partial(self.on_entry_enter_pressed, **user_data)
+        )
 
     def on_entry_focus_out(self, _event: Event[ctk.CTkEntry], **kw) -> None:
-        entry: ctk.CTkEntry = kw['entry']
+        entry: ctk.CTkEntry = kw["entry"]
         assert isinstance(entry, ctk.CTkEntry)
         entry.destroy()
 
     def on_entry_enter_pressed(self, _event: Event, **kw) -> None:
-        entry: ctk.CTkEntry = kw['entry']
+        entry: ctk.CTkEntry = kw["entry"]
         assert isinstance(entry, ctk.CTkEntry)
 
         new_text = entry.get()
-        edited_column_index: int = kw['column_index']
-        edited_item_id: str = kw['item_id']
+        edited_column_index: int = kw["column_index"]
+        edited_item_id: str = kw["item_id"]
 
         assert edited_column_index >= -1
 
