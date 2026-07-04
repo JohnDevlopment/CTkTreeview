@@ -1,0 +1,204 @@
+version = 1
+revision = 3
+requires-python = ">=3.10, <4"
+resolution-markers = [
+    "python_full_version >= '3.12'",
+    "python_full_version == '3.11.*'",
+    "python_full_version < '3.11'",
+]
+
+[[package]]
+name = "asttokens"
+version = "3.0.1"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/71a/4ee5de0bde6a3/asttokens-3.0.1.tar.gz", hash = "sha256:71a4ee5de0bde6a31d64f6b13f2293ac190344478f081c3d1bccfcf5eacb0cb7" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/15a/3ebc0f43c2d0a/asttokens-3.0.1-py3-none-any.whl", hash = "sha256:15a3ebc0f43c2d0a50eeafea25e19046c68398e487b9f1f5b517f7c0f40f976a" },
+]
+
+[[package]]
+name = "attrs"
+version = "24.3.0"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/8f5/c07333d543103/attrs-24.3.0.tar.gz", hash = "sha256:8f5c07333d543103541ba7be0e2ce16eeee8130cb0b3f9238ab904ce1e85baff" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/ac9/6cd038792094f/attrs-24.3.0-py3-none-any.whl", hash = "sha256:ac96cd038792094f438ad1f6ff80837353805ac950cd2aa0e0625ef19850c308" },
+]
+
+[[package]]
+name = "basedpyright"
+version = "1.39.9"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+dependencies = [
+    { name = "nodejs-wheel-binaries" },
+]
+sdist = { url = "http://localhost:5014/root/pypi/+f/32c/bea5fc8273e89/basedpyright-1.39.9.tar.gz", hash = "sha256:32cbea5fc8273e89df3db20daea56cb7286e419ccdfdc479c64759d2dc071901" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/6b0/837b9eba972c7/basedpyright-1.39.9-py3-none-any.whl", hash = "sha256:6b0837b9eba972c71895167ab9b127e6afdbc17abc92312e3f8d15ca82a5611c" },
+]
+
+[[package]]
+name = "colorama"
+version = "0.4.6"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/086/95f5cb7ed6e05/colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/4f1/d9991f5acc0ca/colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6" },
+]
+
+[[package]]
+name = "ctktreeview"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "attrs" },
+    { name = "customtkinter" },
+    { name = "typing-extensions" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "basedpyright" },
+    { name = "icecream" },
+    { name = "rassumfrassum" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "attrs", specifier = ">=24.2.0,<25" },
+    { name = "customtkinter", specifier = ">=5.2.2,<6" },
+    { name = "typing-extensions", specifier = ">=4.12.2,<5" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "basedpyright", specifier = ">=1.17.0,<2" },
+    { name = "icecream", specifier = ">=2.1.3,<3" },
+    { name = "rassumfrassum", specifier = ">=0.3.4" },
+    { name = "ruff", specifier = ">=0.15.20" },
+]
+doc = []
+
+[[package]]
+name = "customtkinter"
+version = "5.2.2"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+dependencies = [
+    { name = "darkdetect" },
+    { name = "packaging" },
+]
+sdist = { url = "http://localhost:5014/root/pypi/+f/fd8/db3bafa961c98/customtkinter-5.2.2.tar.gz", hash = "sha256:fd8db3bafa961c982ee6030dba80b4c2e25858630756b513986db19113d8d207" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/14a/d3e7cd3cb3b9e/customtkinter-5.2.2-py3-none-any.whl", hash = "sha256:14ad3e7cd3cb3b9eb642b9d4e8711ae80d3f79fb82545ad11258eeffb2e6b37c" },
+]
+
+[[package]]
+name = "darkdetect"
+version = "0.8.0"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/b54/28e1170263eb5/darkdetect-0.8.0.tar.gz", hash = "sha256:b5428e1170263eb5dea44c25dc3895edd75e6f52300986353cd63533fe7df8b1" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/a75/09ccf517eaad9/darkdetect-0.8.0-py3-none-any.whl", hash = "sha256:a7509ccf517eaad92b31c214f593dbcf138ea8a43b2935406bbd565e15527a85" },
+]
+
+[[package]]
+name = "executing"
+version = "2.2.1"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/363/2cc370565f664/executing-2.2.1.tar.gz", hash = "sha256:3632cc370565f6648cc328b32435bd120a1e4ebb20c77e3fdde9a13cd1e533c4" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/760/643d3452b4d77/executing-2.2.1-py2.py3-none-any.whl", hash = "sha256:760643d3452b4d777d295bb167ccc74c64a81df23fb5e08eff250c425a4b2017" },
+]
+
+[[package]]
+name = "icecream"
+version = "2.2.0"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+dependencies = [
+    { name = "asttokens" },
+    { name = "colorama" },
+    { name = "executing" },
+    { name = "pygments" },
+]
+sdist = { url = "http://localhost:5014/root/pypi/+f/9d7/f244187f00a13/icecream-2.2.0.tar.gz", hash = "sha256:9d7f244187f00a13f4ac77d176990e187e9c279d6cac4f7548e338291ad97343" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/f8d/f7343b3e78702/icecream-2.2.0-py3-none-any.whl", hash = "sha256:f8df7343b3e787023eec22f42fbe4722df2f93099d394fd820b91e16b2e6cb56" },
+]
+
+[[package]]
+name = "nodejs-wheel-binaries"
+version = "24.16.0"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/c97/3cb69dc5fd16e/nodejs_wheel_binaries-24.16.0.tar.gz", hash = "sha256:c973cb69dc5fd16e6f6dc6e579e2c3d5534e2a1f57619dddf5ba070efa7dde37" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/d9f/8f677dcf30e37/nodejs_wheel_binaries-24.16.0-py2.py3-none-macosx_13_0_arm64.whl", hash = "sha256:d9f8f677dcf30e37ac244f07869726abe043f01eb0f45722b1df31cc2af7093c" },
+    { url = "http://localhost:5014/root/pypi/+f/3d0/370fe7120ce96/nodejs_wheel_binaries-24.16.0-py2.py3-none-macosx_13_0_x86_64.whl", hash = "sha256:3d0370fe7120ce9697a4f60d40480d2bd8808d9f30131458d5afc0040d4e5a51" },
+    { url = "http://localhost:5014/root/pypi/+f/85d/c92bbb79c8515/nodejs_wheel_binaries-24.16.0-py2.py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:85dc92bbb79c851569c5925dcc2a4c915a034efab375f99e4e7e6bbe9cca8342" },
+    { url = "http://localhost:5014/root/pypi/+f/2f3/036292811514b/nodejs_wheel_binaries-24.16.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:2f3036292811514ba847b3708492644764f88a833ac425c5f55007014308ddfd" },
+    { url = "http://localhost:5014/root/pypi/+f/db8/a8a76ebd2b28e/nodejs_wheel_binaries-24.16.0-py2.py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:db8a8a76ebd2b28ecbfc9ad464baa3707241b9e050a30e2efdf6f60c0f886502" },
+    { url = "http://localhost:5014/root/pypi/+f/f1a/3d8f7b4491cbb/nodejs_wheel_binaries-24.16.0-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:f1a3d8f7b4491cbbd023ba3fc4e901fcca2d9fb80d57f24ba3890de8b1dbac03" },
+    { url = "http://localhost:5014/root/pypi/+f/bb1/36be9944f0662/nodejs_wheel_binaries-24.16.0-py2.py3-none-win_amd64.whl", hash = "sha256:bb136be9944f0662dcf1120f45193a6b75b13fac378971a95cc42c9f879a81aa" },
+    { url = "http://localhost:5014/root/pypi/+f/830/8940b5edd0a50/nodejs_wheel_binaries-24.16.0-py2.py3-none-win_arm64.whl", hash = "sha256:8308940b5edd0a50dc5267ea36ba21c9f668e83fe0d9f293937174d3a7e31c36" },
+]
+
+[[package]]
+name = "packaging"
+version = "26.2"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/ff4/52ff5a3e828ce/packaging-26.2.tar.gz", hash = "sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/5fc/45236b9446107/packaging-26.2-py3-none-any.whl", hash = "sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e" },
+]
+
+[[package]]
+name = "pygments"
+version = "2.20.0"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/675/7cd03768053ff/pygments-2.20.0.tar.gz", hash = "sha256:6757cd03768053ff99f3039c1a36d6c0aa0b263438fcab17520b30a303a82b5f" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/81a/9e26dd42fd28a/pygments-2.20.0-py3-none-any.whl", hash = "sha256:81a9e26dd42fd28a23a2d169d86d7ac03b46e2f8b59ed4698fb4785f946d0176" },
+]
+
+[[package]]
+name = "rassumfrassum"
+version = "0.3.4"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/3fb/7368f73dac7ef/rassumfrassum-0.3.4.tar.gz", hash = "sha256:3fb7368f73dac7ef2b4accb0092738eab418fa3d21234160e638339550f8d582" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/82c/72d7d2e49a6d0/rassumfrassum-0.3.4-py3-none-any.whl", hash = "sha256:82c72d7d2e49a6d0fa3fe664af6e33af7297b550d548de333cb2263a062a5e3b" },
+]
+
+[[package]]
+name = "ruff"
+version = "0.15.20"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/141/6eb0434919264/ruff-0.15.20.tar.gz", hash = "sha256:1416eb04349192646b54de98f146c4f59afe37d0decfc02c3cbbf396f3a28566" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/00e/188c53e499c3c/ruff-0.15.20-py3-none-linux_armv6l.whl", hash = "sha256:00e188c53e499c3c1637f73c91dcf2fb56d576cab76ce1be50a27c4e80e37078" },
+    { url = "http://localhost:5014/root/pypi/+f/9eb/d1fd9b9c95fc0/ruff-0.15.20-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:9ebd1fd9b9c95fc0bd7b2761aebec1f030013d2e193a2901b224af68fe47251b" },
+    { url = "http://localhost:5014/root/pypi/+f/c5b/16cdd67ca1081/ruff-0.15.20-py3-none-macosx_11_0_arm64.whl", hash = "sha256:c5b16cdd67ca108185cd36dce98c576350c03b1660a751de725fb049193a0632" },
+    { url = "http://localhost:5014/root/pypi/+f/341/3bb3c3d2ca6a8/ruff-0.15.20-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3413bb3c3d2ca6a8208f1f4809cd2dca3c6de6d0b491c0e70847672bde6e6efd" },
+    { url = "http://localhost:5014/root/pypi/+f/bd7/ec42b3bb3da06/ruff-0.15.20-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:bd7ec42b3bb3da066488db093308a69c4ac5ee6d2af333a86ba6e2eb2e7dd44b" },
+    { url = "http://localhost:5014/root/pypi/+f/e1a/36ad0eb77fba9/ruff-0.15.20-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e1a36ad0eb77fba9aabfb69ede54de6f376d04ac18ebea022847046d340a8267" },
+    { url = "http://localhost:5014/root/pypi/+f/b6d/f3b1e4610432f/ruff-0.15.20-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:b6df3b1e4610432f0386dba04d853b5f08cbbc903410c6fcc02f620f05aff53c" },
+    { url = "http://localhost:5014/root/pypi/+f/e89/f198a1ea6ef0d/ruff-0.15.20-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:e89f198a1ea6ef0d727c1cf16088bc91a6cb0ab947dedc966715691647186eae" },
+    { url = "http://localhost:5014/root/pypi/+f/309/809086c2acb67/ruff-0.15.20-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:309809086c2acb67624950a3c8133e80f32d0d3e27106c0cd60ff26657c9f24b" },
+    { url = "http://localhost:5014/root/pypi/+f/2d2/374caa2f2c2f9/ruff-0.15.20-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:2d2374caa2f2c2f9e2b7da0a50802cfb8b79f55a9b5e49379f564544fbf56487" },
+    { url = "http://localhost:5014/root/pypi/+f/a1e/d17b65293e0c2/ruff-0.15.20-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:a1ed17b65293e0c2f22fc387bc13198a5de94bf4429589b0ff6946b0feaf21a3" },
+    { url = "http://localhost:5014/root/pypi/+f/f70/1305e66b38ea6/ruff-0.15.20-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:f701305e66b38ea6c91882490eb73459796808e4c6362a1b765255e0cdcd4053" },
+    { url = "http://localhost:5014/root/pypi/+f/5b9/c0c367ad8e5d0/ruff-0.15.20-py3-none-musllinux_1_2_i686.whl", hash = "sha256:5b9c0c367ad8e5d0d5b5b8537864c469a0a0e55417aadfbeca41fa61333be9f4" },
+    { url = "http://localhost:5014/root/pypi/+f/01c/c00dd58f0df33/ruff-0.15.20-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:01cc00dd58f0df339d0e902219dd53990ea99996a0344e5d9cc8d45d5307e460" },
+    { url = "http://localhost:5014/root/pypi/+f/ed6/5ef510e43a137/ruff-0.15.20-py3-none-win32.whl", hash = "sha256:ed65ef510e43a137207e0f01cfcf998aeddb1aeeda5c9d35023e910284d7cf21" },
+    { url = "http://localhost:5014/root/pypi/+f/a52/5c81c70fb0380/ruff-0.15.20-py3-none-win_amd64.whl", hash = "sha256:a525c81c70fb0380344dd1d8745d8cc1c890b7fc94a58d5a07bd8eb9557b8415" },
+    { url = "http://localhost:5014/root/pypi/+f/2f5/b2a6d614e8700/ruff-0.15.20-py3-none-win_arm64.whl", hash = "sha256:2f5b2a6d614e8700388806a14996c40fab2c47b819ef57d790a34878858ed9ca" },
+]
+
+[[package]]
+name = "typing-extensions"
+version = "4.16.0"
+source = { registry = "http://localhost:5014/john/dev/+simple/" }
+sdist = { url = "http://localhost:5014/root/pypi/+f/dc9/83d19a509c94d/typing_extensions-4.16.0.tar.gz", hash = "sha256:dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5" }
+wheels = [
+    { url = "http://localhost:5014/root/pypi/+f/481/caa481374e813/typing_extensions-4.16.0-py3-none-any.whl", hash = "sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8" },
+]
