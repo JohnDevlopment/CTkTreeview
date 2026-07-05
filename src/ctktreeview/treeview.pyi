@@ -1,14 +1,14 @@
-from _typeshed import MaybeNone
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Mapping
 from contextlib import AbstractContextManager
-from tkinter import Event
+from tkinter import Event, Misc, Widget
 from tkinter.ttk import _TreeviewItemDict
 from typing import Any, Literal, TypedDict, overload
 
-from typing_extensions import Self
 import customtkinter as ctk
+from _typeshed import MaybeNone
+from typing_extensions import Self
 
-from .typings import Anchor, Color, FontDescription, ImageSpec, ScreenUnits
+from .typings import Anchor, Color, FontDescription, ImageSpec, PackInfo, ScreenUnits
 
 class _TreeviewTagDict(TypedDict):
     # There is also 'text' and 'anchor', but they don't seem to do anything, using them is likely a bug
@@ -89,6 +89,35 @@ class CTkTreeview(ctk.CTkFrame):
     def columns(self) -> Columns: ...
     def configure(self, require_redraw=..., **kw) -> None: ...
     def headings(self) -> Headings: ...
+
+    ## Pack, Grid and Place wrapper methods
+
+    def pack_configure(
+        self,
+        cnf: Mapping[str, Any] = ...,
+        *,
+        after: Misc,
+        anchor: Literal["nw", "n", "ne", "w", "center", "e", "sw", "s", "se"] = ...,
+        before: Misc = ...,
+        expand: bool | Literal[0, 1] = 0,
+        fill: Literal["none", "x", "y", "both"] = ...,
+        side: Literal["left", "right", "top", "bottom"] = ...,
+        ipadx: float | str = ...,
+        ipady: float | str = ...,
+        padx: float | str | tuple[float | str, float | str] = ...,
+        pady: float | str | tuple[float | str, float | str] = ...,
+        in_: Misc = ...,
+        **kw: Any,  # allow keyword argument named 'in', see #4836
+    ) -> None: ...
+    def pack_forget(self) -> None: ...
+    def pack_info(self) -> PackInfo: ...
+    @overload
+    def pack_propagate(self) -> bool: ...
+    @overload
+    def pack_propagate(self, flag: bool) -> None: ...
+    def slaves(self) -> list[Widget]: ...
+
+    pack = pack_configure
 
     ## Treeview wrapper methods
 

@@ -442,6 +442,118 @@ class CTkTreeview(ctk.CTkFrame):
     def headings(self):
         return Headings(self)
 
+    ## Pack, Grid and Place wrapper methods
+
+    def pack(self, **kw) -> None:
+        """
+        Pack a widget in the parent widget.
+
+        @param after Pack the widget after this.
+
+        @param anchor
+        @parblock
+        Position widget according to a given direction. Must be one
+        of the cardinal directions nw, n, ne, e, se, s, sw,  or w,
+        or center. Defaults to center.
+        @endparblock
+
+        @param before Pack the widget before this.
+
+        @param expand Whether to expand widget if parent size grows.
+
+        @param fill
+        @parblock
+        One of NONE, X, Y, or BOTH. Fill widget if this direction if
+        parent grows.
+        @endparblock
+
+        @param in Contain self in this widget.
+        @param in_ Alias of `in`.
+
+        @param ipadx Internal padding in X direction.
+        @param ipady Internal padding in Y direction.
+        @param padx External padding in X direction.
+        @param pady External padding in Y direction.
+
+        @param side Where to add this widget, one of TOP, BOTTOM,
+        LEFT, or RIGHT.
+        """
+        return self.pack_configure(**kw)
+
+    def pack_configure(self, cnf={}, **kw) -> None:
+        """
+        Pack a widget in the parent widget.
+
+        @param after Pack the widget after this.
+
+        @param anchor
+        @parblock
+        Position widget according to a given direction. Must be one
+        of the cardinal directions nw, n, ne, e, se, s, sw,  or w,
+        or center. Defaults to center.
+        @endparblock
+
+        @param before Pack the widget before this.
+
+        @param expand Whether to expand widget if parent size grows.
+
+        @param fill
+        @parblock
+        One of NONE, X, Y, or BOTH. Fill widget if this direction if
+        parent grows.
+        @endparblock
+
+        @param in Contain self in this widget.
+        @param in_ Alias of `in`.
+
+        @param ipadx Internal padding in X direction.
+        @param ipady Internal padding in Y direction.
+        @param padx External padding in X direction.
+        @param pady External padding in Y direction.
+
+        @param side Where to add this widget, one of TOP, BOTTOM,
+        LEFT, or RIGHT.
+        """
+        return super().pack_configure(cnf, **kw)
+
+    def pack_forget(self) -> None:
+        """
+        Unmap this widget and remove it from the packing order.
+        """
+        return super().pack_forget()
+
+    def pack_info(self):
+        """
+        Return the packing options for this widget.
+
+        @return
+        @parblock
+        A dictionary containing the options that were passed to
+        @ref pack. It contains the following keys: `in`, `anchor`,
+        `expand`, `fill`, `side`, `ipadx`, `ipady`, `padx`, `pady`.
+        @endparblock
+
+        @see pack.
+        """
+        return super().pack_info()
+
+    def pack_propagate(self, *args):
+        """
+        Set or get the status for packing propagation.
+
+        @param flag If provided, sets the propagation flag.
+
+        @return The current propagation flag unless `flag` is
+        provided, in which case `None`.
+        """
+        return super().propagate(*args)
+
+    def slaves(self):
+        """
+        Return a list of this widget's slaves in its packing order.
+        """
+        return super().slaves()
+
     ## Treeview wrapper functions
 
     def bbox(self, item: str | int, column: str | int | None = None):

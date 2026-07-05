@@ -34,3 +34,17 @@ Padding: TypeAlias = (
     | tuple[ScreenUnits, ScreenUnits, ScreenUnits]
     | tuple[ScreenUnits, ScreenUnits, ScreenUnits, ScreenUnits]
 )
+
+InMiscTotal = TypedDict("InMiscTotal", {"in": Misc})
+
+
+@type_check_only
+class PackInfo(InMiscTotal):
+    anchor: Literal["nw", "n", "ne", "w", "center", "e", "sw", "s", "se"]
+    expand: bool
+    fill: Literal["none", "x", "y", "both"]
+    side: Literal["left", "right", "top", "bottom"]
+    ipadx: int
+    ipady: int
+    padx: int | tuple[int, int]
+    pady: int | tuple[int, int]
