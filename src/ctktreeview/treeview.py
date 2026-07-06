@@ -263,68 +263,81 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Initialize a treeview object with a given master.
 
-        :param Any master: The master of this widget
+        @param master The master of this widget
+        @param columns
+        @parblock
+        A list of data columns. May be a single string to define a
+        single column or a list of strings for multiple columns. The
+        list may also contain integers.
+        @endparblock
+        @param displaycolumns
+        @parblock
+        The list of columns to display, and in what order. The
+        columns are referenced by their symbolic names (as in
+        `columns`), or their numerical index into the list passed in
+        `columns`. If `#all` or `(#all,)` (the default), all
+        columns are displayed in the order that they are defined.
+        @endparblock
+        @param height The widget height in rows.
+        @param selectmode
+        @parblock
+        Controls how the selection is handled. Valid modes are
+        `browse`, `extended`, and `none`.
+        @endparblock
+        @param show
+        @parblock
+        Controls what elements of the tree to display. Values can be
+        `tree`, `headings`, `tree headings`, an empty string,
+        or a tuple consisting of any combination of `tree` and
+        `headings`.
+        @endparblock
+        @param bg\_color
+        @parblock
+        Sets the background color of this widget. But what it really
+        sets is the background color of the containing frame. The
+        special value `transparent` (the default) makes the frame
+        transparent.
+        @endparblock
+        @param border_color
+        @parblock
+        Sets the border color. In reality, this is an option for the
+        containing frame. If omitted or `None`, the border is not
+        displayed.
+        @endparblock
+        @param int border_width
+        @parblock
+        Sets the border width. In reality, this is an option for the
+        containing frame.
+        @endparblock
+        @param corner_radius Currently unused.
+        @param Color fg_color
+        @parblock
+        Sets the forground color. In
+        reality, this is an option for the
+        containing frame.
+        @endparblock
+        @param width Sets the width. In reality, this is an option
+        for the containing frame.
 
-        :keyword columns: A list of data columns. May be a single
-                          string to define a single column or a
-                          list of strings for multiple columns. The
-                          list may also contain integers
-        :type columns: str or Iterable[str or int]
+        @param class
+        @parblock
+        The window class of this widget. The class is used when
+        querying the option database for the window’s other options,
+        to determine the default bindtags for the window, and to
+        select the widget’s default layout and style.
 
-        :keyword displaycolumns: The list of columns to display,
-                                 and in what order. The columns are
-                                 referenced by their symbolic names
-                                 (as in `columns`), or their
-                                 numerical index into the list
-                                 passed in `columns`. If ``"#all"``
-                                 or ``("#all",)`` (the default), all
-                                 columns are displayed in the order
-                                 that they are defined
-        :type displaycolumns: str or Iterable[str or int]
-
-        :keyword int height: The widget height in rows
-
-        :keyword str selectmode: Controls how the selection is
-                                 handled. Valid modes are
-                                 ``browse``, ``extended``, and
-                                 ``none``
-
-        :keyword str show: Controls what elements of the tree to
-                           display. Values can be ``'tree'``,
-                           ``'headings'``, ``tree headings'``, an
-                           empty string, or a tuple consisting of
-                           any combination of ``'tree'`` and
-                           ``'headings'``
-
-        :keyword Color bg_color: Sets the background color of this
-                                 widget. But what it really sets is
-                                 the background color of the
-                                 containing frame. The special value
-                                 ``"transparent"`` (the default)
-                                 makes the frame transparent
-
-        :keyword border_color: Sets the border color. In reality,
-                               this is an option for the containing
-                               frame. If omitted or ``None``, the
-                               border is not displayed
-        :type border_color: Color or None
-
-        :keyword int border_width: Sets the border width. In
-                                   reality, this is an option for
-                                   the containing frame
-
-        :keyword corder_radius: Currently unused
-        :type corder_radius: int or str or None
-
-        :keyword Color fg_color: Sets the forground color. In
-                                 reality, this is an option for the
-                                 containing frame
-
-        :keyword int width: Sets the width. In reality, this is an
-                            option for the containing frame
-
-        Any remaining keyword options are forwarded to
-        :py:meth:`tkinter.ttk.Treeview.__init__`.
+        This is a read-only option; it can only be set on widget
+        creation.
+        @endparblock
+        @param cursor The mouse cursor to be used for this
+        widget. If not specified, defaults to inheriting its
+        parent’s cursor.
+        @param takefocus Determines whether this widget should take
+        focus during keyboard traversal. If `False`, this widget is
+        skipped; if `True`, it accepts focus as long as it is
+        viewable. If an empty string, the decision is left to
+        traversal scripts.
+        @param style Custom widget style.
         """
         # Attributes:tree
         self.__columns = columns
