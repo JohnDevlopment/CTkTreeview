@@ -5,6 +5,8 @@ CTkTreeview widget and its helper classes.
 from __future__ import annotations
 
 import functools
+import re
+from collections.abc import Callable
 from contextlib import AbstractContextManager
 from tkinter import Event, ttk
 from typing import TYPE_CHECKING, cast
@@ -15,11 +17,13 @@ from .utils import pop_kwargs
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
-    from typing import Any, Literal
+    from typing import Any, Literal, TypeAlias
 
     from typing_extensions import Self
 
     from .typings import Anchor, Color, ImageSpec
+
+    StrDict: TypeAlias = dict[str, Any]
 
 
 class Headings(AbstractContextManager):
@@ -219,6 +223,22 @@ class Columns(AbstractContextManager):
         return self.obj.tree.column(column, "stretch")
 
 
+_registered_configurators: dict[str, Callable[[Any, Any, StrDict], None]] = {}
+
+
+def register_configurator(
+    func: Callable[[Any, Any, StrDict], None],
+) -> Callable[[Any, Any, StrDict], None]:
+    global _registered_configurators
+
+    name = func.__name__
+    m = re.fullmatch(r"_configure_([a-z0-9_]+)", name)
+    assert m is not None
+    key = m[1]
+    _registered_configurators[key] = func
+    return func
+
+
 class CTkTreeview(ctk.CTkFrame):
     """
     A customized treeview widget.
@@ -373,40 +393,13 @@ class CTkTreeview(ctk.CTkFrame):
             show=cast("Any", show),
             **kw,
         )
+        self.tree.pack(fill="both", expand=True, side="left")
 
         # Scrollbar
         self.scrollbar = ctk.CTkScrollbar(
             self, orientation="vertical", command=self.yview
         )
         self.scrollbar.pack(fill="y", expand=True, side="right")
-
-        # Pass init keywords into configure()
-        # self.configure(
-        #     True,
-        #     # Tree
-        #     displaycolumns=displaycolumns,
-        #     fg_color=fg_color,
-        #     # height=height,
-        #     selectmode=selectmode,
-        #     show=show,
-        #     yscrollcommand=self.scrollbar.set,
-
-        #     # Frame
-        #     bg_color=bg_color,
-        #     border_color=border_color,
-        #     border_width=border_width,
-        #     corner_radius=corner_radius,
-        #     width=width,
-        #     **kw
-        # )
-
-        # Override the grid, pack, and place methods to point to the parent frame
-        # treeview_methods = vars(ttk.Treeview)
-        # pack_methods = vars(Grid).keys() | vars(Pack).keys() | vars(Place).keys()
-        # pack_methods = pack_methods.difference(treeview_methods)
-        # for m in pack_methods:
-        #     if m[0] != "_" and m != "config" and m != "configure":
-        #         setattr(self, m, getattr(self.frame, m))
 
         self.bind("<Double-1>", self.on_double_clicked, True)
 
@@ -417,38 +410,13 @@ class CTkTreeview(ctk.CTkFrame):
         frame_options = pop_kwargs(kw, self._valid_frame_options)
         options = {}
 
-        if "displaycolumns" in kw:
-            self.displaycolumns = cast(bool, kw.pop("displaycolumns"))
-            options["displaycolumns"] = self.displaycolumns
-
-        if "fg_color" in kw:
-            self.__fg_color = cast(Color, kw.pop("fg_color"))
-            options["fg_color"] = self.__fg_color
-
-        if "height" in kw:
-            self.__height = cast("int", kw.pop("height"))
-            options["height"] = self.__height
-
-        if "selectmode" in kw:
-            self.__selectmode = cast(
-                "Literal['browse', 'extended', 'none']", kw.pop("selectmode")
-            )
-            options["selectmode"] = self.__selectmode
-
-        if "show" in kw:
-            self.__show = cast(
-                "Literal['tree', 'headings', 'tree headings', ''] | Iterable[str]",
-                kw.pop("show"),
-            )
-            options["show"] = self.__show
-
-        if "yscrollcommand" in kw:
-            self._yscrollcommand = cast(
-                "Callable[[float, float], None]", kw.pop("yscrollcommand")
-            )
-            options["yscrollcommand"] = self._yscrollcommand
+        for k in list(kw.keys()):
+            if k in _registered_configurators:
+                fn = _registered_configurators[k]
+                fn(self, kw.pop(k), options)
 
         kw.update(options)
+        self.tree.configure(**kw)
 
         super().configure(require_redraw, **frame_options)
 
@@ -887,6 +855,38 @@ class CTkTreeview(ctk.CTkFrame):
                          either "units" or "pages"
         """
         return self.tree.yview_scroll(number, what)
+
+    ## Configurators
+
+    @register_configurator
+    def _configure_displaycolumns(self, value, options: StrDict):
+        self.__displaycolumns = value
+        options["displaycolumns"] = value
+
+    @register_configurator
+    def _configure_fg_color(self, value, options: StrDict):
+        self.__fg_color = value
+        options["fg_color"] = value
+
+    @register_configurator
+    def _configure_height(self, value, options: StrDict):
+        self.__height = value
+        options["height"] = value
+
+    @register_configurator
+    def _configure_selectmode(self, value, options: StrDict):
+        self.__selectmode = value
+        options["selectmode"] = value
+
+    @register_configurator
+    def _configure_show(self, value, options: StrDict):
+        self.__show = value
+        options["show"] = value
+
+    @register_configurator
+    def _configure_yscrollcommand(self, value, options: StrDict):
+        self.__yscrollcommand = value
+        options["yscrollcommand"] = value
 
     ## Hooks
 
