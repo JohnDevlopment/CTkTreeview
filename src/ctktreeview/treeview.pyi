@@ -87,7 +87,20 @@ class CTkTreeview(ctk.CTkFrame):
         **kw,
     ) -> None: ...
     def columns(self) -> Columns: ...
-    def configure(self, require_redraw=..., **kw) -> None: ...
+    def configure(
+        self,
+        bg_color: Color = ...,
+        border_color: Color | None = ...,
+        border_width: int | str | None = ...,
+        corner_radius: int | str | None = ...,
+        displaycolumns: str | int | Iterable[str] | Iterable[int] = ...,
+        fg_color: Color | None = ...,
+        height: int = ...,
+        require_redraw: bool = ...,
+        selectmode: Literal["browse", "extended", "none"] = ...,
+        show: Literal["tree", "headings", "tree headings", ""] | Iterable[str] = ...,
+        width: int = ...,
+    ) -> None: ...
     def headings(self) -> Headings: ...
 
     ## Pack, Grid and Place wrapper methods

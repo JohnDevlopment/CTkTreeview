@@ -16,12 +16,12 @@ import customtkinter as ctk
 from .utils import pop_kwargs
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable
+    from collections.abc import Callable
     from typing import Any, Literal, TypeAlias
 
     from typing_extensions import Self
 
-    from .typings import Anchor, Color, ImageSpec
+    from .typings import Anchor, ImageSpec
 
     StrDict: TypeAlias = dict[str, Any]
 
@@ -263,21 +263,18 @@ class CTkTreeview(ctk.CTkFrame):
         master: Any,
         *,
         # Treeview options
-        columns: str | Iterable[str | int],
-        displaycolumns: str | int | Iterable[str] | Iterable[int] = ("#all",),
-        height: int = 25,
-        selectmode: Literal["browse", "extended", "none"] = "extended",
-        show: Literal["tree", "headings", "tree headings", ""] | Iterable[str] = (
-            "tree",
-            "headings",
-        ),
+        columns,
+        displaycolumns=("#all",),
+        height=25,
+        selectmode="extended",
+        show=("tree", "headings"),
         # Frame options
-        bg_color: Color = "transparent",
-        border_color: Color | None = None,
-        border_width: int | str | None = None,
-        corner_radius: int | str | None = None,
-        fg_color: Color | None = None,
-        width: int = 200,
+        bg_color="transparent",
+        border_color=None,
+        border_width=None,
+        corner_radius=None,
+        fg_color=None,
+        width=200,
         **kw,
     ):
         """
