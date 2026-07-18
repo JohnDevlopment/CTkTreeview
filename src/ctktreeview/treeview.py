@@ -553,13 +553,11 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Delete the specified items.
 
-        Each item's descendants are also deleted.
+        Each item’s descendants are also deleted.
 
-        :param items: The items to delete
-        :type items: tuple[str or int, ...]
+        @param items The items to delete.
 
-        .. note::
-           The parent item cannot be deleted.
+        @note The parent item cannot be deleted.
         """
         return self.tree.delete(*items)
 
