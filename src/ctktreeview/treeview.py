@@ -662,9 +662,6 @@ class CTkTreeview(ctk.CTkFrame):
     def selection_add(self, *items):
         """
         Add the specified items to the selection.
-
-        :param *items: A list of items
-        :type *items: str or int
         """
         return self.tree.selection_add(*items)
 
