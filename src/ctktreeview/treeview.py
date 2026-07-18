@@ -769,18 +769,14 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Query or modify the y-view of the window.
 
-        :param index: If provided, adjusts the y-view such that this
-                      is displayed at the top edge of the window
-        :type index: int or None
+        @param index If provided, the index that should be displayed at the top edge of
+                     the window.
 
-        :returns: If ``index`` is omitted, a tuple of floats each in
-                  the range [0,1]. Together, they describe the
-                  vertical span that is visible in the window. For
-                  example, the value ``(0.2, 0.4)`` describes that
-                  20% of the window is cut off from the top, 40% of
-                  the content is visible, and 40% is cut off from
-                  the bottom
-        :rtype: tuple[float, float] or None
+        @return If *index* is omitted, a tuple of floats each in the range
+                `[0,1]`. Together, they describe the vertical span that is visible in
+                the window. For example, the value `(0.2, 0.4)` describes that 20% of
+                the window is cut off from the top, 40% of the content is visible, and
+                40% is cut off from the bottom.
         """
         self.tree.yview(*args)
 
