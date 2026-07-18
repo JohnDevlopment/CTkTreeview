@@ -700,28 +700,18 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Query or modify the options for a tag.
 
-        :param str tagname: A tag
+        @param tagname The tag for which to modify options.
+        @param option If specified, the name of an option to query.
+        @param foreground Text foreground color to apply to the tag.
+        @param background Text background color to apply to the tag.
+        @param font Text font to apply to the tag.
 
-        :param option: If specified, the name of an option to query
-        :type option: str or None
-
-        :keyword str foreground: Text foreground color
-
-        :keyword str background: Text background color
-
-        :keyword font: Text font
-        :type font: FontDescription
-
-        :keyword image: Specifies the item image
-        :type image: ImageSpec
-
-        :returns: If `option` and keywords are not provided, a
-                  dictionary of the option settings for
-                  `tagname`. If `option` is specified, the result is
-                  the value for that option. Otherwise, the result
-                  is ``None`` and the specified options are set for
-                  `tagname`
-        :rtype: FontDescription
+        @return
+        @parblock
+        If *option* and keywords are not provided, a dictionary of the option settings for *tagname*.
+        If *option* is specified, the result is the value for that option.
+        Otherwise, the result is `None` and the specified options are set for *tagname*.
+        @endparblock
         """
         return self.tree.tag_configure(tagname, option, **kw)
 
