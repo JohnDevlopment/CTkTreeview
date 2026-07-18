@@ -902,9 +902,9 @@ class CTkTreeview(ctk.CTkFrame):
         on_focus_out = functools.partial(self.on_entry_focus_out, **user_data)
         entry.bind("<Escape>", on_focus_out)
         entry.bind("<FocusOut>", on_focus_out)
-        entry.bind(
-            "<Return>", functools.partial(self.on_entry_enter_pressed, **user_data)
-        )
+        on_enter_pressed = functools.partial(self.on_entry_enter_pressed, **user_data)
+        entry.bind("<Return>", on_enter_pressed)
+        entry.bind('<KP_Enter>', on_enter_pressed)
 
     def on_entry_focus_out(self, _event: Event[ctk.CTkEntry], **kw) -> None:
         entry: ctk.CTkEntry = kw["entry"]
