@@ -538,18 +538,14 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Get the bounding box of the specified item.
 
-        :param item: The string ID or index of an item
-        :type item: str or int
+        @param item The string ID or index of an item.
+        @param column A column ID or index (optional).
 
-        :param column: A column ID or index (optional)
-        :type column: str or int or None
-
-        :returns: A bounding box (relative to the widget's window)
-                  in the form x y width height; If `column` is
-                  specified, the bounding box of that cell; an empty
-                  string if `item` is not visible (i.e., it is a
-                  descendant of a closed item or is scrolled
-                  offscreen)
+        @return A bounding box (relative to the widget’s window) in
+                the form x y width height; If `column` is specified,
+                the bounding box of that cell; an empty string if
+                `item` is not visible (i.e., it is a descendant of a
+                closed item or is scrolled offscreen).
         """
         return self.tree.bbox(item, column)
 
