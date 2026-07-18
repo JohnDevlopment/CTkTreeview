@@ -749,12 +749,10 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Adjust the x-view of the window to a certain position.
 
-        The result of this function is that the x-view is moved such
-        that `fraction` of the total height of the canvas is
+        Move the x-view such that *fraction* of the total height of the canvas is
         off-screen to the top.
 
-        :param float fraction: A fraction of the total height of the
-                               canvas
+        @param fraction A fraction of the total height of the canvas.
         """
         return self.tree.xview_moveto(fraction)
 
