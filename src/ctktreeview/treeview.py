@@ -795,10 +795,8 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Shift the y-view of the window.
 
-        :param int number: The number of `what` units to scroll
-
-        :param str what: The unit to measure `number` in. Can be
-                         either "units" or "pages"
+        @param number The number of *what* units to scroll.
+        @param what The unit to measure *number* in. Can be either "units" or "pages".
         """
         return self.tree.yview_scroll(number, what)
 
