@@ -680,9 +680,6 @@ class CTkTreeview(ctk.CTkFrame):
     def selection_toggle(self, *items):
         """
         Toggle the selection state of of each specified item.
-
-        :param *items: A list of items
-        :type *items: str or int
         """
         return self.tree.selection_toggle(*items)
 
