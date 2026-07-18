@@ -762,10 +762,8 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Shift the x-view of the window.
 
-        :param int number: The number of `what` units to scroll
-
-        :param str what: The unit to measure `number` in. Can be
-                         either "units" or "pages"
+        @param number The number of *what* units to scroll
+        @param what The unit to measure *number* in. Can be either `units` or `pages`.
         """
         return self.tree.xview_scroll(number, what)
 
