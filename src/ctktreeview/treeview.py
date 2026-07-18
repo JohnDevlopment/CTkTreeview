@@ -606,12 +606,10 @@ class CTkTreeview(ctk.CTkFrame):
         * separator: space between two columns headings;
         * tree: the tree area
 
-        :param int x: X coordinate
-        :param int y: Y coordinate
+        @param x The X coordinate.
+        @param y The Y coordinate.
 
-        :returns: One of ``cell``, ``heading``, ``separator``,
-                  ``tree``
-        :rtype: str
+        @return One of `cell`, `heading`, `separator`, `tree`.
         """
         return self.tree.identify_region(x, y)
 
