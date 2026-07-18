@@ -668,9 +668,6 @@ class CTkTreeview(ctk.CTkFrame):
     def selection_remove(self, *items):
         """
         Remove the specified items from the selection.
-
-        :param *items: A list of items
-        :type *items: str or int
         """
         return self.tree.selection_remove(*items)
 
