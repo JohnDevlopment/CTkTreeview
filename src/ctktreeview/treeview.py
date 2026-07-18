@@ -650,9 +650,6 @@ class CTkTreeview(ctk.CTkFrame):
     def see(self, item):
         """
         Ensure that the specified item is visible.
-
-        :param item: An item
-        :type item: str or int
         """
         return self.tree.see(item)
 
