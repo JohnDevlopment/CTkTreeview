@@ -719,15 +719,12 @@ class CTkTreeview(ctk.CTkFrame):
         """
         Query whether an item or all items have a specific tag.
 
-        :param str tagname: A tag
+        @param tagname Query the item(s) for this tag.
 
-        :param item: Check the whether this item has `tag`
-        :type item: str or int
+        @param item Check the whether this item has *tag*.
 
-        :returns: True if `item` has `tag`, if `item` is
-                  specified. Otherwise, a tuple of items which have
-                  the tag
-        :rtype: bool | tuple[str, ...]
+        @return True if *item* has *tag*, if *item* is specified. Otherwise, a tuple of
+                items which have the tag.
         """
         return self.tree.tag_has(tagname, item)
 
