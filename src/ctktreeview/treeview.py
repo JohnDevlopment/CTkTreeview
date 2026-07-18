@@ -656,9 +656,6 @@ class CTkTreeview(ctk.CTkFrame):
     def selection(self):
         """
         Return a tuple of selected items.
-
-        :returns: A tuple of selected items
-        :rtype: tuple[str, ...]
         """
         return self.tree.selection()
 
