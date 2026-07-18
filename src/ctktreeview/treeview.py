@@ -674,9 +674,6 @@ class CTkTreeview(ctk.CTkFrame):
     def selection_set(self, *items):
         """
         Set the specified items as the new selection.
-
-        :param *items: A list of items
-        :type *items: str or int
         """
         return self.tree.selection_set(*items)
 
